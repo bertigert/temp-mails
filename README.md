@@ -5,14 +5,13 @@
 The main purpose of this is to provide an easy way to quickly register an account on various sites and then discard the email.
 
 ## Installation
-
+```
 pip install temp-mails
-
+```
 ### Requirements
-
-pip install requests
-pip install beautifulsoup4
-
+```
+pip install requests beautifulsoup4
+```
 ## Usage
 
 Create an email on the site https://10minemail.com/
