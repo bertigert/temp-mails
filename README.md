@@ -16,7 +16,7 @@ pip install requests beautifulsoup4
 
 Create an email on the site https://10minemail.com/
 ```python
-from  temp_mails  import  tenminemail_com
+from temp_mails import tenminemail_com
 
 mail = tenminemail_com() # Generate a random email address
 print(mail.email) # get the name of the email (e.g. example@examplehost.com)
@@ -26,4 +26,4 @@ print(mail.get_inbox()) # get all emails in the inbox
 print(mail.wait_for_new_email(delay=1.0, timeout=120)) # wait for a new email for 120 seconds and get the email data
 ```
 
-Every email api is very similar, so little refactoring is needed in order to change the email. However, the email data may change in format or similar. One email host could just return a string with the html content of the email, another one could return a dict with subject, content etc.
+The wrapper api for each email host is very similar, so little refactoring is needed in order to change the email host. However, the email data may change in format or similar. One email host could just return a string with the html content of the email, another one could return a dict with subject, content etc.
