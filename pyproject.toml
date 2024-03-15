@@ -12,8 +12,9 @@ description = "A basic wrapper around various temp mail sites, aiming to provide
 readme = "README.md"
 requires-python = ">=3.12"
 classifiers = [
-    "Language: Python 3",
-    "License: MIT License",
+    "Programming Language :: Python :: 3",
+    "License :: MIT License",
+    "Operating System :: OS Independent",
 ]
 
 [project.urls]
