@@ -12,6 +12,16 @@ pip install temp-mails
 ```
 pip install requests beautifulsoup4
 ```
+
+## Supported Sites
+- https://10minemail.com/
+- https://10minutemail.com/
+- https://internxt.com/temporary-email
+- https://10minutemail.com/
+- https://temp-mail.io/
+- https://temp-mail.org/
+- https://temp-mailbox.com/
+
 ## Usage
 
 Create an email on the site https://10minemail.com/
