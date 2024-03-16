@@ -3,8 +3,8 @@ import requests
 import random
 import json
 from bs4 import BeautifulSoup
-
-
+from string import ascii_lowercase, digits
+import http.client
 
 class tenminemail_com:
     """An API Wrapper around the https://10minemail.com/ website"""
@@ -23,7 +23,7 @@ class tenminemail_com:
         r = self._session.post("https://web2.10minemail.com/mailbox")
 
         if not r.ok:
-            raise Exception("Failed to create email")
+            raise Exception("Failed to create email, status", r.status_code)
         
         data = r.json()
 
@@ -100,7 +100,7 @@ class tenminuteemail_com:
         r = self._session.get("https://10minutemail.com/session/address")
         
         if not r.ok:
-            raise Exception("Failed to create email")
+            raise Exception("Failed to create email, status", r.status_code)
         
         data = r.json()
 
@@ -226,7 +226,7 @@ class minuteinbox_com:
         r = self._session.get("https://www.minuteinbox.com/index/index")
 
         if not r.ok:
-            raise Exception("Failed to create email")
+            raise Exception("Failed to create email, status", r.status_code)
         
         data = json.loads(r.content.decode("utf-8-sig"))
 
@@ -301,24 +301,24 @@ class tempmail_io:
 
     def __init__(self, name: str=None, domain: str=None, exclude: list[str]=None):
         """
-        Generate a random inbox\n
-        Args:\n
-        name - name for the email, if None a random one is chosen\n
-        domain - the domain to use, domain is prioritized over exclude\n
-        exclude - a list of domain to exclude from the random selection\n
+            Generate a random inbox\n
+            Args:\n
+            name - name for the email, if None a random one is chosen\n
+            domain - the domain to use, domain is prioritized over exclude\n
+            exclude - a list of domain to exclude from the random selection\n
         """
 
         self._session = requests.Session()
         
-        CHARS = "abcdefghijklmnopqrstuvwxyz0123456789"
-        self.name = name or "".join(random.choices(CHARS, k=random.randint(8, 16)))
+        self.name = name or "".join(random.choices(ascii_lowercase+digits, k=random.randint(8, 16)))
 
+        self._valid_domains = self._get_valid_domains()
         if domain:
-            self.domain = domain
+            self.domain = domain if domain in self._valid_domains else random.choice(self._valid_domains)
         else:
-            valid_domains = [domain for domain in self._get_valid_domains() if domain not in exclude] if exclude else self._get_valid_domains()
-            self.domain = random.choice(valid_domains)
-        
+            if exclude:
+                self._valid_domains = [domain for domain in self._valid_domains if domain not in exclude]
+            self.domain = random.choice(self._valid_domains)
         
         r = self._session.post("https://api.internal.temp-mail.io/api/v3/email/new", json={
             "name": self.name,
@@ -328,7 +328,7 @@ class tempmail_io:
         if r.ok:
             self.email = f"{self.name}@{self.domain}"
         else:
-            raise Exception("Failed to create Email")
+            raise Exception("Failed to create email, status", r.status_code)
 
     @staticmethod
     def _get_valid_domains() -> list[str]:
@@ -403,7 +403,7 @@ class tempmail_org:
         r = self._session.post("https://web2.temp-mail.org/mailbox")
     
         if not r.ok:
-            raise Exception("Failed to create email")
+            raise Exception("Failed to create email, status", r.status_code)
         
         data = r.json()
 
@@ -458,9 +458,8 @@ class tempmail_org:
 
 
 
-class temp_mailbox_com:
+class tempmailbox_com:
     """An API Wrapper around the https://temp-mailbox.com/ website"""
-
 
     def __init__(self, name: str=None, domain: str=None, exclude: list[str]=None):
         """
@@ -482,17 +481,16 @@ class temp_mailbox_com:
             self.name, self.domain = self.email.split("@")
             return
 
-        CHARS = "abcdefghijklmnopqrstuvwxyz0123456789"
-        self.name = name or "".join(random.choices(CHARS, k=random.randint(8, 16)))
+        self.name = name or "".join(random.choices(ascii_lowercase+digits, k=random.randint(8, 16)))
         
+        self._valid_domains = self._get_valid_domains()
         if domain:
-            if not domain in self._get_valid_domains():
-                raise Exception("Not a valid domain")
+            self.domain = domain if domain in self._valid_domains else random.choice(self._valid_domains)
         else:
-            valid_domains = [domain for domain in self._get_valid_domains() if domain not in exclude] if exclude else self._get_valid_domains()
-            domain = random.choice(valid_domains)
+            if exclude:
+                self._valid_domains = [domain for domain in self._valid_domains if domain not in exclude]
+            self.domain = random.choice(self._valid_domains)
         
-        self.domain = domain
         self.email = f"{self.name}@{self.domain}"
 
         data = {
@@ -561,3 +559,254 @@ class temp_mailbox_com:
         if r.ok:
             soup = BeautifulSoup(r.text, "lxml")
             return soup.find('div', class_='pre').get_text(strip=True)
+        
+
+class tenminutesemail_net:
+    """An API Wrapper around the https://10minutesemail.net/ website"""
+
+    def __init__(self):
+        """
+        Generate a random inbox
+        """
+
+        self._session = requests.Session()
+        
+        self._session.headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+        }
+    
+        r = self._session.get("https://10minutesemail.net/")
+       
+        if not r.ok:
+            raise Exception("Failed to create email, status", r.status_code)
+        
+        self._token = BeautifulSoup(r.content, "lxml").find("meta", {"name": "csrf-token"})["content"]
+        
+        
+        r = self._session.post("https://10minutesemail.net/messages", {
+            "_token": self._token,
+            "captcha": ""
+        })
+    
+        if not r.ok:
+            raise Exception("Failed to create email, status", r.status_code)
+        
+        data = r.json()
+
+        self.email: str = data["mailbox"]
+        self.name, self.domain = self.email.split("@")
+
+    
+    def get_inbox(self) -> list[dict]:
+        """
+        Returns the inbox of the email as a list with mails as dicts list[dict, dict, ...]
+        """
+
+        r = self._session.post("https://10minutesemail.net/messages", {
+            "_token": self._token,
+            "captcha": ""
+        })
+        
+        if r.ok:
+            return r.json()["messages"]
+
+
+    def wait_for_new_email(self, delay: float=2.0, timeout: int=60) -> dict:
+        """
+        Waits for a new mail, returns the data of the incoming email, None if timeout is hit or an error occurs\n
+        Args:\n
+        delay - the delay between each check in seconds\n
+        timeout - the time which is allowed to pass before forcefully stopping, smaller than 0 -> no timeout
+        """
+
+        if timeout > 0: 
+            start = time()
+        
+        old_length = len(self.get_inbox())
+
+        while True:
+            if timeout > 0 and time()-start >= timeout:
+                return None
+            
+            if (len(data := self.get_inbox())) > old_length:
+                return data[0]
+            
+            sleep(delay)
+
+
+class etempmail_net:
+    """An API Wrapper around the https://etempmail.net/10minutemail website"""
+
+    def __init__(self, name: str=None, domain: str=None, exclude: list[str]=None):
+        """
+            Generate a random inbox\n
+            Args:\n
+            name - name for the email, if None a random one is chosen\n
+            domain - the domain to use, domain is prioritized over exclude\n
+            exclude - a list of domain to exclude from the random selection\n
+        """
+
+        self._session = requests.Session()
+        
+        # Get required data for email creation and more
+        r = self._session.get("https://etempmail.net/10minutemail")
+       
+        if not r.ok:
+            raise Exception("Failed to create email, status", r.status_code)
+        
+        # Create Email
+        soup = BeautifulSoup(r.content, "lxml")
+        with open("test.html", "w") as f:
+            f.write(r.text)
+        data = json.loads(soup.find("div", {"x-data": "{ in_app: false }"})["wire:initial-data"])
+
+        self._valid_domains = data["serverMemo"]["data"]["domains"]
+        self.name = name or "".join(random.choices(ascii_lowercase+digits, k=random.randint(8, 16)))
+        
+        if domain:
+            self.domain = domain if domain in self._valid_domains else random.choice(self._valid_domains)
+        else:
+            if exclude:
+                self._valid_domains = [domain for domain in self._valid_domains if domain not in exclude]
+            self.domain = random.choice(self._valid_domains)
+        
+        self.email = f"{self.name}@{self.domain}"
+        
+        self._token = soup.find("input", {"type": "hidden"})["value"]
+
+        payload = {
+            "fingerprint": data["fingerprint"],
+            "serverMemo": data["serverMemo"],
+            "updates": [
+                {
+                    "type": "fireEvent",
+                    "payload": {
+                        "id": "".join(random.choices(ascii_lowercase+digits, k=4)),
+                        "event": "syncEmail",
+                        "params": [
+                            self.email
+                        ]
+                    }
+                }
+            ]
+        }
+                 
+        r = self._session.post("https://etempmail.net/livewire/message/frontend.actions_10minutemail", json=payload, headers={
+            "x-csrf-token": self._token,
+            "x-livewire": "true"
+        })
+
+        if not r.ok:
+            raise Exception("Failed to create email, status", r.status_code)
+
+        # Create Email End
+
+        # Get the data required for checking messages
+
+        data = json.loads(soup.find("div", {"x-data": "{ show: false, id: 0 }"})["wire:initial-data"])
+
+        payload = {
+            "fingerprint": data["fingerprint"],
+            "serverMemo": data["serverMemo"],
+            "updates": [
+                {
+                    "type": "fireEvent",
+                    "payload": {
+                        "id": "".join(random.choices(ascii_lowercase+digits, k=4)),
+                        "event": "syncEmail",
+                        "params": [
+                            self.email
+                        ]
+                    }
+                },
+                {
+                    "type": "fireEvent",
+                    "payload": {
+                        "id": "".join(random.choices(ascii_lowercase+digits, k=4)),
+                        "event": "fetchMessages",
+                        "params": []
+                    }
+                }
+            ]
+        }
+
+        r = self._session.post("https://etempmail.net/livewire/message/frontend.app", json=payload, headers={
+            "x-csrf-token": self._token,
+            "x-livewire": "true"
+        })
+        
+        if not r.ok:
+            raise Exception("Failed to create email, status", r.status_code)
+
+        new_data = r.json()
+        self.__fingerprint__ = data["fingerprint"]
+        self.__servermemo__ = data["serverMemo"]
+        self.__servermemo__["htmlHash"] = new_data["serverMemo"]["htmlHash"]
+        self.__servermemo__["data"].update(new_data["serverMemo"]["data"])
+        self.__servermemo__["checksum"] = new_data["serverMemo"]["checksum"]
+
+    @staticmethod
+    def _get_valid_domains() -> list[str] | None:
+        """
+            Returns a list of a valid domains, None if failure
+        """
+        r = requests.get("https://etempmail.net/10minutemail")
+       
+        if r.ok:
+            soup = BeautifulSoup(r.content, "lxml")
+            data = json.loads(soup.find("div", {"class": "p-3 md:p-0 w-full md:w-2/4 order-2"})["wire:initial-data"])
+
+            return data["serverMemo"]["data"]["domains"]
+
+
+    def get_inbox(self) -> list[dict]:
+        """
+        Returns the inbox of the email as a list with mails as dicts list[dict, dict, ...]
+        """
+
+        payload = {
+            "fingerprint": self.__fingerprint__,
+            "serverMemo": self.__servermemo__,
+            "updates": [
+                {
+                    "type": "fireEvent",
+                    "payload": {
+                        "id": "".join(random.choices(ascii_lowercase+digits, k=4)),
+                        "event": "fetchMessages",
+                        "params": []
+                    }
+                }
+            ]
+        }
+
+        r = self._session.post("https://etempmail.net/livewire/message/frontend.app", json=payload, headers={
+            "x-csrf-token": self._token,
+            "x-livewire": "true"
+        })
+        
+        if r.ok:
+            data = r.json()
+            return data["serverMemo"]["data"]["messages"] if "data" in data["serverMemo"] else []
+
+
+    def wait_for_new_email(self, delay: float=2.0, timeout: int=60) -> dict:
+        """
+        Waits for a new mail, returns the data of the incoming email, None if timeout is hit or an error occurs\n
+        Args:\n
+        delay - the delay between each check in seconds\n
+        timeout - the time which is allowed to pass before forcefully stopping, smaller than 0 -> no timeout
+        """
+
+        if timeout > 0: 
+            start = time()
+        
+        old_length = len(self.get_inbox())
+
+        while True:
+            if timeout > 0 and time()-start >= timeout:
+                return None
+            
+            if (len(data := self.get_inbox())) > old_length:
+                return data[-1]
+            
+            sleep(delay)

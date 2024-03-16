@@ -11,7 +11,7 @@ pip install temp-mails
 ```
 ### Requirements
 ```
-pip install requests beautifulsoup4
+pip install requests beautifulsoup4 lxml
 ```
 
 ## Supported Sites
@@ -22,6 +22,7 @@ pip install requests beautifulsoup4
 - https://temp-mail.io/
 - https://temp-mail.org/
 - https://temp-mailbox.com/
+- https://etempmail.net/10minutemail
 
 ## Usage
 
