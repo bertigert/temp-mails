@@ -1,10 +1,10 @@
 from time import sleep, time
+from typing import Literal
 import requests
 import random
 import json
 from bs4 import BeautifulSoup
 from string import ascii_lowercase, digits
-import http.client
 
 class tenminemail_com:
     """An API Wrapper around the https://10minemail.com/ website"""
@@ -637,19 +637,20 @@ class tenminutesemail_net:
 class etempmail_net:
     """An API Wrapper around the https://etempmail.net/10minutemail website"""
 
-    def __init__(self, name: str=None, domain: str=None, exclude: list[str]=None):
+    def __init__(self, name: str=None, domain: str=None, exclude: list[str]=None, life_time: Literal[5, 10, 30] = 10):
         """
             Generate a random inbox\n
             Args:\n
             name - name for the email, if None a random one is chosen\n
             domain - the domain to use, domain is prioritized over exclude\n
             exclude - a list of domain to exclude from the random selection\n
+            life_time - time for which the email is avaiable in minutes
         """
 
         self._session = requests.Session()
         
         # Get required data for email creation and more
-        r = self._session.get("https://etempmail.net/10minutemail")
+        r = self._session.get(f"https://etempmail.net/{life_time}minutemail")
        
         if not r.ok:
             raise Exception("Failed to create email, status", r.status_code)
