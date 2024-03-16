@@ -744,6 +744,8 @@ class etempmail_net:
         self.__servermemo__["data"].update(new_data["serverMemo"]["data"])
         self.__servermemo__["checksum"] = new_data["serverMemo"]["checksum"]
 
+
+
     @staticmethod
     def _get_valid_domains() -> list[str] | None:
         """
@@ -753,9 +755,10 @@ class etempmail_net:
        
         if r.ok:
             soup = BeautifulSoup(r.content, "lxml")
-            data = json.loads(soup.find("div", {"class": "p-3 md:p-0 w-full md:w-2/4 order-2"})["wire:initial-data"])
+            data = json.loads(soup.find("div", {"x-data": "{ in_app: false }"})["wire:initial-data"])
 
             return data["serverMemo"]["data"]["domains"]
+
 
 
     def get_inbox(self) -> list[dict]:
