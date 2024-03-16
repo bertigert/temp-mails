@@ -637,7 +637,7 @@ class tenminutesemail_net:
 class etempmail_net:
     """An API Wrapper around the https://etempmail.net/10minutemail website"""
 
-    def __init__(self, name: str=None, domain: str=None, exclude: list[str]=None, life_time: Literal[5, 10, 30] = 10):
+    def __init__(self, name: str=None, domain: str=None, exclude: list[str]=None, life_time: Literal[5, 10, 15, 20, 30, 60]=None):
         """
             Generate a random inbox\n
             Args:\n
@@ -650,7 +650,7 @@ class etempmail_net:
         self._session = requests.Session()
         
         # Get required data for email creation and more
-        r = self._session.get(f"https://etempmail.net/{life_time}minutemail")
+        r = self._session.get("https://etempmail.net/" + ((str(life_time) + "minutemail") if life_time else ""))
        
         if not r.ok:
             raise Exception("Failed to create email, status", r.status_code)
