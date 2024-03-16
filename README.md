@@ -5,6 +5,7 @@
 The main purpose of this is to provide an easy way to quickly register an account on various sites and then discard the email.
 
 ## Installation
+While every python3 version _should_ hypothetically work, python 3.12 is best
 ```
 pip install temp-mails
 ```
