@@ -656,8 +656,7 @@ class etempmail_net:
         
         # Create Email
         soup = BeautifulSoup(r.content, "lxml")
-        with open("test.html", "w") as f:
-            f.write(r.text)
+        
         data = json.loads(soup.find("div", {"x-data": "{ in_app: false }"})["wire:initial-data"])
 
         self._valid_domains = data["serverMemo"]["data"]["domains"]
