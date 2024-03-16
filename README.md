@@ -23,6 +23,7 @@ pip install requests beautifulsoup4 lxml
 - https://temp-mail.org/
 - https://temp-mailbox.com/
 - https://etempmail.net/10minutemail
+- https://10minutesemail.net/
 
 ## Usage
 
