@@ -1,0 +1,14 @@
+17.03.2024 - 1.2:
+- added changelog
+- added support for https://www.disposablemail.com/
+- added support for https://www.emailondeck.com/
+- added support for https://1secmail.com/
+- added support for https://www.mohmal.com/
+- added support for https://www.fakemail.net/
+- added support for https://tempmail.email/
+- added support for https://tempmail.plus/
+- added support for https://generator.email/
+- major refactor
+- fixed bugs in multiple wait_for_emails functions
+- fixed bug in Internxt_doctcom.get_inbox
+- general improvements, bugfixes and changes
