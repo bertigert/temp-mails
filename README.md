@@ -15,7 +15,6 @@ pip install requests beautifulsoup4 lxml websocket-client==1.7.0
 ```
 Note that you may need to uninstall all websocket packages in order for websocket-client to function properly
 
-<<<<<<< HEAD
 ## Usage
 
 Create an email on the site https://10minemail.com/
@@ -98,9 +97,6 @@ print(data)
 ```
 
 ## Supported Unique Sites (119) (~110 working as of 19.06.2024)
-=======
-## Supported Sites (46)
->>>>>>> 54653ef4e1a0bbabc50e08c47f2747a7f8d4d1fd
 - https://10minemail.com/ - semi-official
 - https://10minutemail.com/ - unofficial
 - https://internxt.com/temporary-email - unofficial, weird ratelimit
@@ -222,21 +218,14 @@ print(data)
 - http://mailcatch.com/ - unofficial
 
 > unofficial = we use no official API, because the website does not offer one (at least for free)\
-<<<<<<< HEAD
 > semi-official = website hat an official API, but we don't use it, often because it is using RapidAPI, broken or requires an API key\
 > official = we use the websites official API (RapidAPI or not)
 > captcha = requires you to go onto the website and solve a captcha/verify your browser on the same IP. After that it should work for some requests/minutes. You may need to manually add a captcha response. In some cases, it just does not work anymore, I won't remove the script though as the "knowledge" could still be interesting.
-=======
-> semi-official = website hat an official API, but we don't use it, often because it is using RapidAPI or broken\
-> official = we use the websites official API (RapidAPI or not)\
-> captcha = requires you to go onto the website and solve a captcha/verify your browser on the same IP. After that it should work for some requests/minutes.
->>>>>>> 54653ef4e1a0bbabc50e08c47f2747a7f8d4d1fd
 
 ### In Progress
 - None
 
 
-<<<<<<< HEAD
 ### Websites I won't add
 - Every website which requires an account/api key in order to use it
 - Every website which only forwards emails to a real email
@@ -268,26 +257,3 @@ print(data)
 - https://www.mailmenot.io/ - down
 - https://temprmail.com/ - broken
 - https://www.no-spammers.com/ - captcha (easy tho)
-=======
-mail = Tenminemail_com() # Generate a random email address
-print(mail.email) # get the name of the email (e.g. example@examplehost.com)
-
-print(mail.get_inbox()) # get all emails in the inbox
-
-data = mail.wait_for_new_email(delay=1.0, timeout=120) # wait for a new email for 120 seconds and get the email data
-print(data)
-
-print(mail.get_mail_content(message_id=data["_id"])) # get the content of the email
-```
-
-The wrapper api for each email host is very similar, so little refactoring is needed in order to change the email host. However, the email data may change in format or similar. One email host could just return a string with the html content of the email, another one could return a dict with subject, content etc, I will probably add better support for that at some point.\
-Also note that only some hosts support user defined names/domains.\
-Also note that the built in wait_for_mail can break if there are too many emails or too many emails at once. You can implement you own custom function for that case. It works for all my use cases though (registrations).
-
-### Websites I won't add at the moment
-- https://www.emailnator.com/ - would be RapidAPI, site doesnt rly work
-- https://smailpro.com/ - would be RapidAPI, site doesnt rly work
-- https://maildrop.cc/ - uses cloudflare
-- https://www.throwawaymail.com/en - server down
-- https://www.tempmail.us.com/ - 1 email/IP, uses cpanel
->>>>>>> 54653ef4e1a0bbabc50e08c47f2747a7f8d4d1fd
