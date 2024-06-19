@@ -1,0 +1,9 @@
+__pycache__
+dist
+*test.*
+*.bat
+publish.py
+commit
+trashed
+send_email.py
+temp.*

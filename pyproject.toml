@@ -1,0 +1,18 @@
+[build-system]
+requires = [ "hatchling",]
+build-backend = "hatchling.build"
+
+[project]
+name = "temp-mails"
+version = "2.1"
+description = "A basic wrapper around various temp mail sites, aiming to provide an almost identical api for every site. The main purpose of this is to provide an easy way to quickly register an account on various sites and then discard the email."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [ "Programming Language :: Python :: 3", "License :: OSI Approved :: MIT License", "Operating System :: OS Independent",]
+[[project.authors]]
+name = "bertigert"
+email = "bertiger@riseup.net"
+
+[project.urls]
+Homepage = "https://github.com/bertigert/temp-mails"
+Issues = "https://github.com/bertigert/temp-mails/issues"

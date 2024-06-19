@@ -1,0 +1,22 @@
+19.06.2024 - 2.1:
+- added support for https://tempmail.adguard.com/, https://maillog.org/, https://wp-temp-mail.com/, https://temp-mail.id/, https://zemail.me/, https://mail-temp.com/, https://www.crazymailing.com/, https://www.fakemailgenerator.com/, https://www.byom.de/, https://moakt.com/, https://inboxes.com/, https://dropmail.me/, https://gmailcity.com/, https://mailgolem.com/, https://anonymmail.net/, https://emailfake.com/, https://disposableemail.co/, https://temp-inbox.me/, https://www.tempo-mail.com/, https://www.txen.de/, https://tempm.com/, https://www.trashmail.de/, https://schutz-mail.de/, https://incognitomail.co/, https://tempmailers.com/, https://10minutemail.one/, https://mail.gw/, https://email10min.com/, https://10-minutemail.net, https://lroid.com/, https://www.10minuteemails.com/, https://maildax.com/, https://tmpmail.co/, https://mailsac.com/, https://www.fumail.co/, https://tempomail.top/, https://mail.td/, https://www.mintemail.com/, https://www.minutemailbox.com/, https://tmail.io/, https://tmail.io/temporary-disposable-gmail, https://segamail.com/, https://www.mail7.io/, https://mail4qa.com/, https://treemail.pro/, https://getnada.cc/, https://inboxkitten.com/, https://www.tempmailinbox.com/, https://harakirimail.com/, https://mailnesia.com/, https://mailper.com/, https://tempemail.co/, https://www.tempinbox.xyz/, https://www.eyepaste.com/, https://email-fake.com/, https://rainmail.xyz/, https://www.tempemailpro.com/, https://www.mailinator.com/, https://temp-mailbox.net/, https://expressinboxhub.com/, https://tempmailbeast.com/, https://burnermailbox.com/, https://tempemailgen.com/, https://priyo.email/, https://tempp-mails.com/, https://fmail.sbs/, https://www.temils.com/, https://trashmail.ws/, https://temp-email.info/, https://www.mailtemp.net/, https://haribu.net/, http://mailcatch.com/
+- added exmamples
+- updated various sites for new apis
+- multiple sites are not online anymore/use captchas now
+- removed rel since its not thread safe
+- various changes, improvements and bugfixes
+- last big update as basically all possible sites are supported
+
+24.03.2024 - 2.0:
+- added support for https://cryptogmail.com/, https://mail.tm/de/, https://temp-inbox.com/, https://mailhole.de/, https://tmailor.com/, https://tmail.ai/, https://cloudtempmail.com/, https://luxusmail.org/, https://muellmail.com/, https://tempmail.gg/, https://www.eztempmail.com/, https://tempail.com/, https://tempmail.ninja/, https://upxmail.com/, https://www.trash-mail.com/, https://tempemailfree.com/, https://tempr.email/, https://tempmail.net/, https://www.guerrillamail.com/, https://tm-mail.com/, https://tempmail.lol/, https://yopmail.com, https://etempmail.com/, https://tmail.gg/, https://mailtemp.uk/, https://mostakbile.com/, https://fakermail.com/ (hypothetically), https://tempmails.net/, https://temp-mail.gg/, https://tempmailso.com/
+- removed the class for https://10minutemail.net/ since it wasnt used as the site is just bad
+- major refactor
+- general improvements, bugfixes and changes
+
+17.03.2024 - 1.2:
+- added changelog
+- added support for https://www.disposablemail.com/, https://www.emailondeck.com/, https://1secmail.com/, https://www.mohmal.com/, https://www.fakemail.net/, https://tempmail.email/, https://tempmail.plus/, https://generator.email/
+- major refactor
+- fixed bugs in multiple wait_for_emails functions
+- fixed bug in Internxt_doctcom.get_inbox
+- general improvements, bugfixes and changes
