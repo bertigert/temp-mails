@@ -23,6 +23,9 @@ class Mailper_com():
         self.name, self.domain, self.email, self.valid_domains = _generate_user_data(name, domain, exclude, self.get_valid_domains())
         
         self._session = requests.Session()
+        self._session.headers = {
+            "Referer": "https://mailper.com/"
+        }
 
         if _token_data:
             if time() > _token_data["expires_at"]: # token expired
@@ -45,6 +48,7 @@ class Mailper_com():
             r = self._session.post("https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyBxM0cu2Zr7W6Nz0r7PBzf6gy2GvkowBnM", json={
                 "returnSecureToken": True
             })
+            
             if not r.ok:
                 raise Exception("Failed to create account for email, status", r.status_code)
             
