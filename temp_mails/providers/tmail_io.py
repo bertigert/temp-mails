@@ -28,7 +28,7 @@ class Tmail_io(_Livewire):
                     "app": "https://tmail.io/livewire/message/gmail.app",
                     "actions": "https://tmail.io/livewire/message/gmail.actions"
                 },
-                order=-1, name=f"{random.choice(self.valid_gmails).removesuffix('@gmail.com')}+{name or "".join(random.choices(ascii_lowercase+digits, k=6))}", domain="gmail.com", exclude=[]
+                order=-1, name=f"{random.choice(self.valid_gmails).removesuffix('@gmail.com')}+{name or ''.join(random.choices(ascii_lowercase+digits, k=6))}", domain="gmail.com", exclude=[]
             )
             
         else:

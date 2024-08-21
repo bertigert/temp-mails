@@ -24,7 +24,6 @@ class Temils_com(_Fake_trash_mail):
         """
 
         r = requests.get("https://www.temils.com/en/change")
-        print(r)
         if r.ok:
             soup = BeautifulSoup(r.text, "lxml")
             return [domain.text for domain in soup.find("select", {"name": "domain"}).findChildren("option")]

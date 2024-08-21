@@ -1151,12 +1151,12 @@ class _Generatoremail_etc:
                     return None
                 
                 ws.close()
-                ws = websocket.WebSocketApp(f"{self._baseurl.replace("https", "wss", 1)}/socket.io/?EIO=4&transport=websocket", on_message=on_message, on_close=on_close)
+                ws = websocket.WebSocketApp(f"{self._baseurl.replace('https', 'wss', 1)}/socket.io/?EIO=4&transport=websocket", on_message=on_message, on_close=on_close)
                 ws.run_forever()
 
         email_data = None
         manual_stop = False
-        ws = websocket.WebSocketApp(f"{self._baseurl.replace("https", "wss", 1)}/socket.io/?EIO=4&transport=websocket", on_message=on_message, on_close=on_close)
+        ws = websocket.WebSocketApp(f"{self._baseurl.replace('https', 'wss', 1)}/socket.io/?EIO=4&transport=websocket", on_message=on_message, on_close=on_close)
         ws.run_forever()
         return email_data
 

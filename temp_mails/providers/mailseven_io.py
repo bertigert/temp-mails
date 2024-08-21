@@ -94,8 +94,6 @@ class Mailseven_io():
                         "content": email["mail_source"]["html"]
                     }
 
-                    #print(f"Email received from {email_data["from"]} to {email["to_username"]} with subject {email_data["subject"]}")
-                    
                     if email["mail_source"]["to"]["value"][0]["address"] == self.email:
                         manual_stop = True
                         ws.close()

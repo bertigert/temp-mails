@@ -219,7 +219,7 @@ print(data)
 
 > unofficial = we use no official API, because the website does not offer one (at least for free)\
 > semi-official = website hat an official API, but we don't use it, often because it is using RapidAPI, broken or requires an API key\
-> official = we use the websites official API (RapidAPI or not)
+> official = we use the websites official API (RapidAPI or not)\
 > captcha = requires you to go onto the website and solve a captcha/verify your browser on the same IP. After that it should work for some requests/minutes. You may need to manually add a captcha response. In some cases, it just does not work anymore, I won't remove the script though as the "knowledge" could still be interesting.
 
 ### In Progress
