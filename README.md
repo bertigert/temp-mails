@@ -97,7 +97,7 @@ data = mail.wait_for_new_email(start_length=old_length)
 print(data)
 ```
 
-## Supported Unique Sites (119) (~107 working as of 23.08.2024)
+## Supported Working Unique Sites (107)
 - https://10minemail.com/ - semi-official
 - https://10minutemail.com/ - unofficial
 - https://internxt.com/temporary-email - unofficial, weird ratelimit
@@ -216,7 +216,7 @@ print(data)
 - None
 
 
-### Sites which worked at some point
+### Sites which worked at some point (15)
 - https://tempmail.adguard.com/ - unofficial, captcha
 - https://tempmailbeast.com/ - unofficial, doesn't provide service anymore?
 - https://tempmail.gg/ - unofficial, offline
