@@ -17,12 +17,12 @@ assert len(d0) == 0, "Inbox not empty"
 
 r = send_email_sync(mail.email)
 assert r.ok, "Failed to send email"
-d1 = mail.wait_for_new_email(timeout=120)
+d1 = mail.wait_for_new_email()
 print(d1)
 
 r = send_email_sync(mail.email)
 assert r.ok, "Failed to send email"
-d2 = mail.wait_for_new_email(timeout=120)
+d2 = mail.wait_for_new_email()
 print(d2)
 
 assert d1["id"] != d2["id"], "Email IDs are the same"

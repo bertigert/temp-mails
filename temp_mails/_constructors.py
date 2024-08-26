@@ -61,6 +61,7 @@ class CreateSSLAdapterCF(HTTPAdapter):
     ssl_context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
     ssl_context.minimum_version = ssl.TLSVersion.TLSv1_2
     ssl_context.maximum_version = ssl.TLSVersion.TLSv1_3
+    ssl_context.set_ecdh_curve("prime256v1")
 
     def init_poolmanager(self, *args, **kwargs):
         kwargs['ssl_context'] = self.ssl_context
@@ -99,7 +100,7 @@ class _Livewire(_WaitForMail):
         soup = BeautifulSoup(r.text, "lxml")
         
         
-        data = json.loads(soup.find(lambda tag: tag.name == "div" and "in_app: false" in tag.get("x-data", ""))["wire:initial-data"])
+        data = json.loads(soup.find(lambda tag: tag.name == "div" and "in_app: false" in tag.get("x-data", "") and ( "wire:initial-data" in tag.attrs ))["wire:initial-data"])
         # data = json.loads(soup.find("div", {"x-data": self.strings["first_data"]})["wire:initial-data"])
 
         self.valid_domains = data["serverMemo"]["data"]["domains"] if domain != "gmail.com" else ["gmail.com"] # scuffed hotfix for websites (atm only https://tmail.io/) which implement their gmail domains seperate from other domains
@@ -135,7 +136,7 @@ class _Livewire(_WaitForMail):
         # Get the data required for checking messages
 
         
-        data = json.loads(soup.find(lambda tag: (tag.name == "div" or tag.name == "main") and "id: 0" in tag.get("x-data", ""))["wire:initial-data"])
+        data = json.loads(soup.find(lambda tag: (tag.name == "div" or tag.name == "main") and "id: 0" in tag.get("x-data", "") and ( "wire:initial-data" in tag.attrs ))["wire:initial-data"])
         # data = json.loads(soup.find(self.strings["second_data"][0], {"x-data": self.strings["second_data"][1]})["wire:initial-data"])
 
         payload = {
@@ -245,7 +246,7 @@ class _Livewire2(_WaitForMail):
         
         soup = BeautifulSoup(r.text, "lxml")
         
-        data = json.loads(soup.find(lambda tag: tag.name == "div" and "in_app: true" in tag.get("x-data", ""))["wire:initial-data"])
+        data = json.loads(soup.find(lambda tag: tag.name == "div" and "in_app: true" in tag.get("x-data", "") and ( "wire:initial-data" in tag.attrs ))["wire:initial-data"])
         # data = json.loads(soup.find("div", {"x-data": self.strings["first_data"]})["wire:initial-data"])
 
         self.valid_domains = data["serverMemo"]["data"]["domains"]
@@ -325,7 +326,7 @@ class _Livewire2(_WaitForMail):
             raise Exception("Failed to create email, status", r.status_code)
         
         soup = BeautifulSoup(r.text, "lxml")
-        data = json.loads(soup.find(lambda tag: tag.name == "div" and "in_app: false" in tag.get("x-data", ""))["wire:initial-data"])
+        data = json.loads(soup.find(lambda tag: tag.name == "div" and "in_app: false" in tag.get("x-data", "") and ( "wire:initial-data" in tag.attrs ))["wire:initial-data"])
         # data = json.loads(soup.find("div", {"x-data": self.strings["first_data2"]})["wire:initial-data"])
 
         payload = {
@@ -352,7 +353,7 @@ class _Livewire2(_WaitForMail):
         if not r.ok:
             raise Exception("Failed to create email, status", r.status_code)
 
-        data = json.loads(soup.find(lambda tag: (tag.name == "div" or tag.name == "main") and "id: 0" in tag.get("x-data", ""))["wire:initial-data"])
+        data = json.loads(soup.find(lambda tag: (tag.name == "div" or tag.name == "main") and "id: 0" in tag.get("x-data", "") and ( "wire:initial-data" in tag.attrs ) ) ["wire:initial-data"])
         # data = json.loads(soup.find(self.strings["second_data"][0], {"x-data": self.strings["second_data"][1]})["wire:initial-data"])
 
         payload = {

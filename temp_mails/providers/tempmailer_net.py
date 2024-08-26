@@ -5,8 +5,8 @@ import requests
 
 from .._constructors import _Livewire
 
-class Tempmailinbox_com(_Livewire):
-    """An API Wrapper around the https://www.tempmailinbox.com/ website"""
+class Tempmailer_net(_Livewire):
+    """An API Wrapper around the https://tempmailer.net website"""
 
     def __init__(self, name: str=None, domain: str=None, exclude: list[str]=None):
         """
@@ -19,11 +19,11 @@ class Tempmailinbox_com(_Livewire):
         
         super().__init__(
             urls={
-                "base": "https://www.tempmailinbox.com/",
-                "app": "https://www.tempmailinbox.com/livewire/message/frontend.app",
-                "actions": "https://www.tempmailinbox.com/livewire/message/frontend.actions"
+                "base": "https://tempmailer.net/",
+                "app": "https://tempmailer.net/livewire/message/frontend.app",
+                "actions": "https://tempmailer.net/livewire/message/frontend.actions"
             },
-            order=-1, name=name, domain=domain, exclude=exclude
+            order=0, name=name, domain=domain, exclude=exclude
         )
 
     @staticmethod
@@ -31,11 +31,10 @@ class Tempmailinbox_com(_Livewire):
         """
             Returns a list of a valid domains, None if failure
         """
-        r = requests.get("https://www.tempmailinbox.com/")
+        r = requests.get("https://tempmailer.net/")
        
         if r.ok:
             soup = BeautifulSoup(r.text, "lxml")
             data = json.loads(soup.find(lambda tag: tag.name == "div" and "in_app: false" in tag.get("x-data", "") and ( "wire:initial-data" in tag.attrs ))["wire:initial-data"])
 
             return data["serverMemo"]["data"]["domains"]
-                        

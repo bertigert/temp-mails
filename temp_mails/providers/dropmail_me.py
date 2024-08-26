@@ -42,7 +42,7 @@ class Dropmail_me():
             return r.text
 
 
-    def get_inbox(self) -> list[dict]:
+    def get_inbox(self) -> None:
         """
         There is no server sided inbox
         """

@@ -33,7 +33,7 @@ class Trashmail_com(_WaitForMail):
             "form-postbox": self.name,
             "form-domain": f"{self.domain}---{requires_password}", # get the flag of the domain
             "form-password": password if requires_password == "1" else ""
-        })
+        }, verify=False)
 
         if not r.ok:
             raise Exception("Failed to create email, status", r.status_code)
@@ -45,7 +45,6 @@ class Trashmail_com(_WaitForMail):
         Returns a list of valid domains of the service (format: abc.xyz) as a list\n
         _return_flag - also return the flag which determines if the domain requires a password, needed for creation of an email
         """
-        
         requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.InsecureRequestWarning)
         r = requests.get("https://www.trash-mail.com/inbox/", verify=False)
 
@@ -64,7 +63,7 @@ class Trashmail_com(_WaitForMail):
         mail_id - the id of the mail you want the content of
         """
 
-        r = self._session.get(f"https://www.trash-mail.com/en/mail/message/id/{mail_id}")
+        r = self._session.get(f"https://www.trash-mail.com/en/mail/message/id/{mail_id}", verify=False)
         if r.ok:
             soup = BeautifulSoup(r.text, "lxml")
             return soup.find("div", {"class": "message-content"})
@@ -74,7 +73,7 @@ class Trashmail_com(_WaitForMail):
         Returns the inbox of the email as a list with mails as dicts list[dict, dict, ...]
         """
 
-        r = self._session.get("https://www.trash-mail.com/inbox/")
+        r = self._session.get("https://www.trash-mail.com/inbox/", verify=False)
         if r.ok:
             soup = BeautifulSoup(r.text, "lxml")
             email_list = soup.find("table", {"class": "table table-striped table-bordered table-hover table-messages"})

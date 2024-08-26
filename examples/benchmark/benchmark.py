@@ -58,14 +58,20 @@ for mail_class in mail_classes:
     black_list = {
         "Internxt_com": "Hard Ratelimit",
         "Minutemailbox_com": "Server broken",
-        "Schutzmail_de": "Server broken",
         "Temils_com": "Offline",
-        "Haribu_net": "Offline/Broken",
-        "Lroid_com": "Offline/Broken",
         "Tempmail_gg": "Offline",
-        "Temppmail_com": "Captcha/Cf",
-        "Zemail_me": "Captcha/Cf",
-        "Yopmail_com": "Captcha"
+        "Yopmail_com": "Captcha",
+        "Fakermail_com": "Offline",
+        "Mailcatch_com": "Offline",
+        "Rainmail_xyz": "Offline",
+        "Crazymailing_com": "Offline",
+        "Adguard_com": "Captcha",
+        "Tempmailbeast_com": "No service anymore",
+        "Tempmailers_com": "Offline",
+        "Schutzmail_de": "Offline",
+        "Maildax_com": "Captcha",
+        "Getnada_cc": "Broken",
+        "Wptempmail_com": "Offline"
     }
     if mail_class.__name__ in black_list:
         tprint(f"Not testing {mail_class.__name__} because: {black_list[mail_class.__name__]}")

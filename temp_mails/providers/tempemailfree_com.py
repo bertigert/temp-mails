@@ -35,7 +35,7 @@ class Tempemailfree_com(_Livewire):
 
         if r.ok:
             soup = BeautifulSoup(r.text, "lxml")
-            data = json.loads(soup.find(lambda tag: tag.name == "div" and "in_app: false" in tag.get("x-data", ""))["wire:initial-data"])
+            data = json.loads(soup.find(lambda tag: tag.name == "div" and "in_app: false" in tag.get("x-data", "") and ( "wire:initial-data" in tag.attrs ))["wire:initial-data"])
 
             return data["serverMemo"]["data"]["domains"]
                                         

@@ -3,8 +3,8 @@ import requests
 
 from .._constructors import _Fake_trash_mail
 
-class Tempmailbox_net(_Fake_trash_mail):
-    """An API Wrapper around the https://tempmailbox.net/ website"""
+class Tempdashmailbox_net(_Fake_trash_mail):
+    """An API Wrapper around the https://temp-mailbox.net/ website"""
 
     def __init__(self, name: str=None, domain: str=None, exclude: list[str]=None):
         """
@@ -14,7 +14,7 @@ class Tempmailbox_net(_Fake_trash_mail):
             domain - the domain to use, domain is prioritized over exclude\n
             exclude - a list of domain to exclude from the random selection\n
         """
-        super().__init__(base_url="https://tempmailbox.net", name=name, domain=domain, exclude=exclude)
+        super().__init__(base_url="https://temp-mailbox.net", name=name, domain=domain, exclude=exclude)
 
     
     @staticmethod
@@ -23,7 +23,7 @@ class Tempmailbox_net(_Fake_trash_mail):
         Returns a list of valid domains of the service (format: abc.xyz) as a list
         """
 
-        r = requests.get("https://tempmailbox.net/change")
+        r = requests.get("https://temp-mailbox.net/change")
         if r.ok:
             soup = BeautifulSoup(r.text, "lxml")
             return [domain.text for domain in soup.find("select", {"name": "domain"}).findChildren("option")]

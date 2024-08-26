@@ -20,6 +20,7 @@ class Mailgolem_com(_WaitForMail):
         self.name, self.domain, self.email, self.valid_domains = _generate_user_data(name, domain, exclude, self.get_valid_domains())
         
         r = self._session.get("https://mailgolem.com/")
+
         if not r.ok:
             raise Exception("Failed to create email, status", r.status_code)
         
@@ -63,3 +64,6 @@ class Mailgolem_com(_WaitForMail):
                 "from": mail["from"],
                 "subject": mail["subject"],
             } for mail in r.json()]
+        
+        elif r.status_code == 500:
+            return []

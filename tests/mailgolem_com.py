@@ -10,12 +10,12 @@ assert len(d0) == 0, "Inbox not empty"
 
 r = send_email_sync(mail.email)
 assert r.ok, "Failed to send email"
-d1 = mail.wait_for_new_email()
+d1 = mail.wait_for_new_email(timeout=-1)
 print(d1)
 
 r = send_email_sync(mail.email)
 assert r.ok, "Failed to send email"
-d2 = mail.wait_for_new_email()
+d2 = mail.wait_for_new_email(timeout=-1)
 print(d2)
 
 

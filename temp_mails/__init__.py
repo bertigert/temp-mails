@@ -12,7 +12,7 @@ from .providers.etempmail_net import Etempmail_net
 from .providers.disposablemail_com import Disposablemail_com
 from .providers.emailondeck_com import Emailondeck_com
 from .providers.onesecmail_com import Onesecmail_com
-from .providers.mohamal_com import Mohamal_com
+from .providers.mohmal_com import Mohmal_com, Mohamal_com
 from .providers.fakemail_net import Fakemail_net
 from .providers.tempmail_email import Tempmail_email
 from .providers.tempmail_plus import Tempmail_plus
@@ -105,7 +105,7 @@ from .providers.eyepaste_com import Eyepaste_com
 from .providers.emaildashfake_com import Emaildashfake_com
 from .providers.rainmail_xyz import Rainmail_xyz
 from .providers.mailinator_com import Mailinator_com
-from .providers.tempmailbox_net import Tempmailbox_net
+from .providers.tempdashmailbox_net import Tempdashmailbox_net
 from .providers.expressinboxhub_com import Expressinboxhub_com
 from .providers.tempmailbeast_com import Tempmailbeast_com
 from .providers.burnermailbox_com import Burnermailbox_com
@@ -119,6 +119,9 @@ from .providers.tempemail_info import Tempemail_info
 from .providers.mailtemp_net import Mailtemp_net
 from .providers.haribu_net import Haribu_net
 from .providers.mailcatch_com import Mailcatch_com
+from .providers.tempmailbox_net import Tempmailbox_net
+from .providers.tempmailer_net import Tempmailer_net
+from .providers.tempmail_cc import Tempmail_cc
 
 __version__ = "2.1"
 __all_providers__ = [os.path.splitext(file_name)[0].capitalize() for file_name in os.listdir(os.path.join(os.path.dirname(__file__), 'providers')) if file_name.endswith(".py")]

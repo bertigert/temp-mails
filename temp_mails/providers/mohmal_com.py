@@ -3,8 +3,8 @@ import requests
 
 from .._constructors import _WaitForMail, _generate_user_data, _deCFEmail
 
-class Mohamal_com(_WaitForMail):
-    """An API Wrapper around the https://www.mohmal.com/website"""
+class Mohmal_com(_WaitForMail):
+    """An API Wrapper around the https://www.mohmal.com/ website"""
 
     def __init__(self, name: str=None, domain:str=None, exclude: list[str]=None):
         """
@@ -17,7 +17,10 @@ class Mohamal_com(_WaitForMail):
         super().__init__(-1)
 
         self._session = requests.Session()
-     
+        self._session.headers = {
+           "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36"
+        }
+        
         self.name, self.domain, self.email, self.valid_domains = _generate_user_data(name, domain, exclude, self.get_valid_domains())
 
         self._session.post("https://www.mohmal.com/en/create", data={
@@ -31,10 +34,13 @@ class Mohamal_com(_WaitForMail):
         Returns a list of valid domains of the service (format: abc.xyz) as a list
         """
 
-        r = requests.get("https://www.mohmal.com/en")
+        r = requests.get("https://www.mohmal.com/en", headers={
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36"
+        })
+
         if r.ok:
             soup = BeautifulSoup(r.text, "lxml")
-            return [domain.text for domain in soup.find_all("option")]
+            return [domain.text for domain in soup.find("select", {"name": "domain"}).findChildren("option", recursive=False)]
 
 
     def get_mail_content(self, mail_id: str) -> str:
@@ -75,3 +81,4 @@ class Mohamal_com(_WaitForMail):
                 emails.append(data)
 
             return emails
+Mohamal_com = Mohmal_com 

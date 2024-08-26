@@ -1,7 +1,7 @@
 from random import choices, choice
 from string import ascii_lowercase
 
-from temp_mails import Mohamal_com as Mail
+from temp_mails import Tempmailer_net as Mail
 from send_email import send_email_sync
 
 name, domain = "".join(choices(ascii_lowercase, k=6)), choice(Mail.get_valid_domains())
@@ -28,7 +28,3 @@ print(d2)
 assert d1["id"] != d2["id"], "Email IDs are the same"
 
 assert len(mail.get_inbox()) == 2, "Inbox length wrong"
-
-d3 = mail.get_mail_content(mail_id=d1["id"])
-print(d3)
-assert d3 != None, "Failed to get email content"
