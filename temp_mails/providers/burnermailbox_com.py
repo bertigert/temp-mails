@@ -1,12 +1,9 @@
-import json
-
-from bs4 import BeautifulSoup
-import requests
-
 from .._constructors import _Livewire2
 
 class Burnermailbox_com(_Livewire2):
     """An API Wrapper around the https://burnermailbox.com/ website."""
+
+    _BASE_URL = "https://burnermailbox.com"
 
     def __init__(self, name: str=None, domain: str=None, exclude: list[str]=None):
         """
@@ -19,10 +16,10 @@ class Burnermailbox_com(_Livewire2):
         
         super().__init__(
             urls={
-                "base": "https://burnermailbox.com",
-                "mailbox": "https://burnermailbox.com/mailbox/",
-                "app": "https://burnermailbox.com/livewire/message/frontend.app",
-                "actions": "https://burnermailbox.com/livewire/message/frontend.actions"
+                "base": self._BASE_URL,
+                "mailbox": self._BASE_URL+"/mailbox/",
+                "app": self._BASE_URL+"/livewire/message/frontend.app",
+                "actions": self._BASE_URL+"/livewire/message/frontend.actions"
             },
             order=0, name=name, domain=domain, exclude=exclude
             )
@@ -30,13 +27,6 @@ class Burnermailbox_com(_Livewire2):
 
     @staticmethod
     def get_valid_domains() -> list[str] | None:
-        """
-            Returns a list of a valid domains, None if failure
-        """
-        r = requests.get("https://burnermailbox.com/", headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"})
-
-        if r.ok:
-            soup = BeautifulSoup(r.text, "lxml")
-            data = json.loads(soup.find(lambda tag: tag.name == "div" and "in_app: true" in tag.get("x-data", "") and ( "wire:initial-data" in tag.attrs ))["wire:initial-data"])
-            
-            return data["serverMemo"]["data"]["domains"]
+        """Returns a list of a valid domains, None if failure. Only one domain"""
+       
+        return ["kihasl.com"]

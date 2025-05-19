@@ -3,9 +3,9 @@ import requests
 from .._constructors import _WaitForMail, _generate_user_data
 
 class Segamail_com(_WaitForMail):
-    """An API Wrapper around the https://1secmail.com website"""
+    """An API Wrapper around the https://segamail.com website"""
 
-    def __init__(self, name: str=None, domain:str=None, exclude: list[str]=None):
+    def __init__(self):
         """
         Generate a random inbox
         """

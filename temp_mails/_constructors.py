@@ -12,12 +12,13 @@ from bs4 import BeautifulSoup
 import websocket
 
 
+GLOBAL_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" # Some Version of Brave
+
 def _generate_user_data(name: str=None, domain:str=None, exclude: list[str]=None, valid_domains: list[str]=None, validate_domain: bool=True):
     """Generates a random name and domain for a given temp mail object."""
     
     name = name or "".join(random.choices(ascii_lowercase+digits, k=random.randint(6, 15))) # some sites do not support names >= 16
 
-    #valid_domains = valid_domains or valid_domains
     if domain:
         if validate_domain:
             domain = domain if domain in valid_domains else random.choice(valid_domains)
@@ -51,7 +52,7 @@ class _WaitForMail:
         while True:
             if timeout > 0 and time()-start >= timeout:
                 return None
-            
+
             if (len(data := self.get_inbox())) > old_length:
                 return data[self.indx]
             
@@ -77,7 +78,6 @@ def _deCFEmail(fp): # https://stackoverflow.com/a/58111681
     except ValueError:
         pass
 
-
 class _Livewire(_WaitForMail):
     def __init__(self, urls: str, order: Literal[0, -1], name: str=None, domain: str=None, exclude: list[str]=None):
         super().__init__(order)
@@ -86,7 +86,7 @@ class _Livewire(_WaitForMail):
 
         self._session = requests.Session()
         self._session.headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+            "User-Agent": GLOBAL_UA
         }
 
 
@@ -180,6 +180,19 @@ class _Livewire(_WaitForMail):
         self._servermemo["data"].update(new_data["serverMemo"]["data"])
         self._servermemo["checksum"] = new_data["serverMemo"]["checksum"]
 
+    @staticmethod
+    def get_valid_domains(url: str) -> list[str]:
+        """Returns a list of valid domains of the service. This website only has 1 domain"""
+
+        r = requests.get(url)
+       
+        if r.ok:
+            soup = BeautifulSoup(r.text, "lxml")
+            data = json.loads(soup.find(lambda tag: tag.name == "div" and "in_app: false" in tag.get("x-data", "") and ( "wire:initial-data" in tag.attrs ))["wire:initial-data"])
+
+            return data["serverMemo"]["data"]["domains"]
+        
+
     def get_inbox(self) -> list[dict]:
         """
         Returns the inbox of the email as a list with mails as dicts list[dict, dict, ...]
@@ -236,7 +249,7 @@ class _Livewire2(_WaitForMail):
             self._session.mount("https://", SSLAdapterCF)
         
         self._session.headers = {
-           "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+           "User-Agent": GLOBAL_UA
         }
 
         r = self._session.get(self.urls["base"])
@@ -279,14 +292,14 @@ class _Livewire2(_WaitForMail):
                 }
             ]
         }
-        
+
         r = self._session.post(self.urls["actions"], json=payload, headers={
             "x-csrf-token": self._token,
             "x-livewire": "true"
         })
 
         if not r.ok:
-            raise Exception("Failed to create email, status", r.status_code)
+            raise Exception("Failed to create email, status", r.status_code, r.text)
         
         # create email
         data = r.json()
@@ -451,7 +464,7 @@ class _Web2(_WaitForMail):
         self._session = requests.Session()
 
         self._session.headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+            "User-Agent": GLOBAL_UA
         }
 
         if cf_protx:
@@ -504,7 +517,7 @@ class _Web2(_WaitForMail):
 
 
 class _Minuteinbox_etc(_WaitForMail):
-    def __init__(self, base_url: str):
+    def __init__(self, base_url: str, needs_cookie_and_token: bool=False):
         """
         Generate a random inbox
         """
@@ -514,15 +527,22 @@ class _Minuteinbox_etc(_WaitForMail):
 
         self._session = requests.Session()
         
+        csrf_token = ""
+        if needs_cookie_and_token:
+            r = self._session.get(base_url)
+            if not r.ok:
+                raise Exception("Failed to create session, status", r.status_code)
+            csrf_token = r.text.split('const CSRF="', 1)[1].split('"', 1)[0]
+        
+
         self._session.headers = {
             "Accept": "application/json, text/javascript, */*; q=0.01",
             "Accept-Encoding": "gzip, deflate, br, zstd",
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+            "User-Agent": GLOBAL_UA,
             "X-Requested-With": "XMLHttpRequest"
         }
-    
-        r = self._session.get(base_url+"/index/index")
 
+        r = self._session.get(f"{base_url}/index/index{'?csrf_token='+csrf_token if needs_cookie_and_token else ''}")
         if not r.ok:
             raise Exception("Failed to create email, status", r.status_code)
         
@@ -531,7 +551,12 @@ class _Minuteinbox_etc(_WaitForMail):
         self.email: str = data["email"]
         self.name, self.domain = self.email.split("@", 1)
 
-
+    @staticmethod
+    def get_valid_domains() -> None:
+        """There is no way to get the valid domains for this website"""
+        
+        return None
+    
     def get_mail_content(self, mail_id: str | int) -> str:
         """
         Returns the whole content of a mail\n
@@ -583,6 +608,15 @@ class _Mailcare(_WaitForMail):
         
         self.name, self.domain, self.email, self.valid_domains = _generate_user_data(name, domain, exclude, self.get_valid_domains())
     
+    @staticmethod
+    def get_valid_domains(url: str) -> list[str]:
+        """
+        Returns a list of valid domains of the service (format: abc.xyz) as a list
+        """
+
+        r = requests.get(url)
+        if r.ok:
+            return [domain[1:] for domain in r.json()["domains"]]
     
     def get_mail_content(self, mail_id: str) -> str:
         """
@@ -610,9 +644,9 @@ class _Mailcare(_WaitForMail):
 
 
 
-class _Tmailor_Tmail_Cloudtempmail:
-
-    def __init__(self, host: Literal["https://tmailor.com/", "https://tmail.ai/", "https://cloudtempmail.com/"]):
+class _Tmail_Cloudtempmail:
+    
+    def __init__(self, host: Literal["https://tmail.ai/", "https://cloudtempmail.com/"]):
         """
         Generate a random inbox
         """
@@ -664,6 +698,13 @@ class _Tmailor_Tmail_Cloudtempmail:
 
         ws = websocket.WebSocketApp("wss" + self.link.removeprefix("https") +"/wss", on_message=on_message)
         ws.run_forever()
+
+
+    @staticmethod
+    def get_valid_domains():
+        """There is no way to get the valid domains for this website"""
+        
+        return None
 
 
     def get_mail_content(self, mail_id: str) -> str:
@@ -820,7 +861,7 @@ class _Fake_trash_mail(_WaitForMail):
         self._session = requests.Session()
         
         self._session.headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+            "User-Agent": GLOBAL_UA
         }
     
         r = self._session.get(self.base_url)
@@ -868,6 +909,19 @@ class _Fake_trash_mail(_WaitForMail):
             data = r.json()
             self.email: str = data["mailbox"]
             self.name, self.domain = self.email.split("@", 1)
+
+    @staticmethod
+    def get_valid_domains(base_url: str) -> list[str]:
+        """
+        Returns a list of valid domains of the service (format: abc.xyz) as a list
+        """
+
+        r = requests.get(base_url+"/change", headers={
+            "User-Agent": GLOBAL_UA
+        })
+        if r.ok:
+            soup = BeautifulSoup(r.text, "lxml")
+            return [domain.text for domain in soup.find("select", {"name": "domain"}).findChildren("option")]
 
 
     def get_inbox(self) -> list[dict]:
@@ -1027,6 +1081,17 @@ class _Generatoremail_etc:
 
         self.name, self.domain, self.email, self.valid_domains = _generate_user_data(name, domain, exclude, self.get_valid_domains(), validate_domain=False)
 
+    @staticmethod
+    def get_valid_domains(url: str) -> list[str]:
+        """
+        Returns a list of valid domains of the service (format: abc.xyz) as a list.\nThis is not a complete list but a random selection.
+        """
+
+        r = requests.get(url)
+        if r.ok:
+            soup = BeautifulSoup(r.text, "lxml")
+            return [domain.text for domain in soup.find_all("div", {"class": "tt-suggestion"})]
+
 
     def get_mail_content(self, mail_id: str, retry: bool=True, retry_delay: int=2, max_retries: int=3, _retries: int=1) -> dict:
         """
@@ -1162,24 +1227,21 @@ class _Generatoremail_etc:
         return email_data
 
 class _Solucioneswc:
-    def __init__(self, base_url: str, name: str=None, domain:str=None, exclude: list[str]=None):
+    def __init__(self, base_url: str, token: str="empty"):
         """
         Generate an inbox\n
         Args:\n
-        name - name for the email, if None a random one is chosen\n
-        domain - the domain to use, domain is prioritized over exclude\n
-        exclude - a list of domain to exclude from the random selection\n
+        token - the token to use for the websocket connection, if None a new one is generated. Can be used to regain access to an email
         """
 
-        self._baseurl = base_url
+        self._baseurl = base_url.removesuffix("/")
 
-        self._session = requests.Session()
+        self._useragent = GLOBAL_UA
         
         # for IDE
         self.name: str
         self.domain: str
         self.email: str
-        self.valid_domains: str
 
         def on_message(ws, msg):
             if msg.startswith("0"): # connected
@@ -1188,36 +1250,26 @@ class _Solucioneswc:
             elif msg.startswith("2"): # ping
                 ws.send("3")
 
-            elif msg.startswith("40"): # gets send out at the beginning
-                ws.send('42["get_domains"]')
-
             elif msg.startswith("42"):
                 data = json.loads(msg[2:])
                 
-                if data[0] == "set_domains_data":
-                    self.name, self.domain, self.email, self.valid_domains = _generate_user_data(name, domain, exclude, [domain["name"] for domain in data[1]])
-                    payload = "42"+ json.dumps(["get_email_data", {
-                                                "action": "create", 
-                                                    "data": {
-                                                        "email_alias": self.name,
-                                                        "email_domain": self.domain
-                                                    }
-                                                }])
-                    ws.send(payload)
+                if data[0] == "initialize_app": #app is ready
+                    email_data = data[1]
+                    
+                    self.email = email_data["email_address"]
+                    self.name, self.domain = self.email.split("@", 1)
+                    self._token = email_data["visitor_token"]
 
-                elif data[0] == "set_visitor_token": # email created
-                    self._token = data[1]
                     ws.close()
 
-                elif data[0] == "enable_active_form" or (data[0] == "show_alert" and data[1]["message"] in ("The tempmail is invalid.", f"The {self.domain} emails have expired. You cannot continue to use them.")):
-                    raise Exception("Failed to create email, invalid email")
+        ws = websocket.WebSocketApp(
+            f"wss://tm-app.solucioneswc.com:2053/socket.io/?user_token=empty&visitor_token={token}&email_token=empty&page_type=inbox&EIO=4&transport=websocket",
+            #on_error=lambda *args: print("error", args), on_close=lambda *args: print("close", args),
+            on_message=on_message,
+            header={"Origin": self._baseurl}
+        )
 
-        
-        ws = websocket.WebSocketApp("wss://ws.solucioneswc.com:2053/socket.io/?user_token=empty&visitor_token=empty&emails_list=empty&page_type=inbox&EIO=4&transport=websocket", 
-                                    on_error=lambda *args: ws.close(), on_message=on_message, 
-                                    header={"Origin": self._baseurl}
-                                    )
-        ws.run_forever(suppress_origin=True)
+        ws.run_forever(sslopt={"context": CreateSSLAdapterCF.ssl_context}, suppress_origin=True)
 
 
     def get_mail_content(self, mail_id: str):
@@ -1233,31 +1285,34 @@ class _Solucioneswc:
 
             elif msg.startswith("2"): # ping
                 ws.send("3")
-
-            elif msg.startswith("40"):
-                ws.send("42"+json.dumps([
-                    "get_email_message",
-                    {
-                        "email_address": self.email,
-                        "email_message_id": mail_id,
-                        "email_message_type": "inbound"
-                    }
-                ]))
             
             elif msg.startswith("42"):
                 data = json.loads(msg[2:])
-    
-                if data[0] == "open_message":
-                    nonlocal email_data
-                    email_data = data[1]["email_message_data"]["data"]["content"]
-                    ws.close()
 
+                if data[0] == "initialize_app": # app is ready
+                    ws.send('421'+json.dumps([
+                        "get_email_message",
+                        {
+                            "email_address": self.email,
+                            "email_message_id": mail_id,
+                            "email_message_type": "inbound"
+                        }
+                    ]))
+            
+            elif msg.startswith("431"): # email content
+                data = json.loads(msg[3:])[0]
+                nonlocal email_data
+                email_data = data["email_message_data"]["data"]["content"]
+                ws.close()
+ 
         email_data = None
-        ws = websocket.WebSocketApp(f"wss://ws.solucioneswc.com:2053/socket.io/?user_token=empty&visitor_token={self._token}&emails_list=empty&page_type=inbox&EIO=4&transport=websocket", 
-                                    on_error=lambda *args: ws.close(), on_message=on_message, 
-                                    header={"Origin": self._baseurl}
-                                    )
-        ws.run_forever(suppress_origin=True)
+        ws = websocket.WebSocketApp(
+            f"wss://tm-app.solucioneswc.com:2053/socket.io/?user_token=empty&visitor_token={self._token}&email_token=empty&page_type=inbox&EIO=4&transport=websocket", 
+            # on_error=lambda *args: print("error", args), on_close=lambda *args: print("close", args),
+            on_message=on_message, 
+            header={"Origin": self._baseurl}
+        )
+        ws.run_forever(sslopt={"context": CreateSSLAdapterCF.ssl_context}, suppress_origin=True)
         
         return email_data
 
@@ -1275,59 +1330,60 @@ class _Solucioneswc:
             elif msg.startswith("2"): # ping
                 ws.send("3")
             
-            elif msg.startswith("40"): # sid response
-                ws.send('42["initialize_app"]')
-
             elif msg.startswith("42"):
-                nonlocal email_data
                 data = json.loads(msg[2:])
 
-                if data[0] == "set_empty_messages_notice": # no emails
-                    email_data = []
-                    ws.close()
-
-                if data[0] == "insert_email_messages":
-                    if return_content: nonlocal content_count
-                    
-                    email_data = [{
-                        "id": str(email["id"]),
-                        "time": email["date"],
-                        "from": email["sender"]["text"],
-                        "subject": email["subject"]
-                    } for email in data[1]["email_messages"]]
-                    
-                    if not return_content or len(email_data) == 0:
-                        ws.close()
-
-                    for email in email_data:
-                        ws.send("42"+json.dumps([
-                        "get_email_message",
-                        {
-                            "email_address": None,
-                            "email_message_id": email["id"],
-                            "email_message_type": "inbound"
-                        }
-                    ]))
+                if data[0] == "initialize_app":
+                    ws.send('420["get_email_messages","inbox"]')
+            
+            elif msg.startswith("430"): # email list
+                data = json.loads(msg[3:])[0]
                 
-                elif data[0] == "open_message": # only happens after insert_email_messages and if return_content is true so we can assume email_data and content_count exists
-                    content_count+=1
-                    
-                    for email in email_data:
-                        if str(data[1]["email_message_data"]["id"]) == email["id"]:
-                            email["content"] = data[1]["email_message_data"]["data"]["content"]
-                            break
-                    
-                    if content_count == len(email_data):
-                        ws.close()
+                nonlocal email_data
+                email_data = [] if data["empty"] else [{
+                    "id": email["id"],
+                    "time": email["date"],
+                    "from": email["sender"]["value"][0]["address"],
+                    "subject": email["subject"]
+                } for email in data["email_messages"]]
 
+                if not return_content or len(email_data) == 0:
+                    ws.close()
+                else: # get content for each email
+                    for email in email_data:
+                        ws.send('421'+json.dumps([
+                            "get_email_message",
+                            {
+                                "email_address": self.email,
+                                "email_message_id": email["id"],
+                                "email_message_type": "inbound"
+                            }
+                        ]))
+            
+            elif msg.startswith("431"): # email content
+                data = json.loads(msg[3:])[0]
+                
+                nonlocal content_count
+                for email in email_data:
+                    if email["id"] == data["email_message_data"]["id"]:
+                        email["content"] = data["email_message_data"]["data"]["content"]
+                        content_count += 1
+
+                        if content_count == len(email_data):
+                            ws.close()
+                        
+                        break
+                    
         email_data = None
         if return_content: content_count = 0
-        
-        ws = websocket.WebSocketApp(f"wss://ws.solucioneswc.com:2053/socket.io/?user_token=empty&visitor_token={self._token}&emails_list=empty&page_type=inbox&EIO=4&transport=websocket", 
-                                    on_error=lambda *args: ws.close(), on_message=on_message, 
-                                    header={"Origin": self._baseurl}
-                                    )
-        ws.run_forever(suppress_origin=True)
+
+        ws = websocket.WebSocketApp(
+            f"wss://tm-app.solucioneswc.com:2053/socket.io/?user_token=empty&visitor_token={self._token}&email_token=empty&page_type=inbox&EIO=4&transport=websocket", 
+            # on_error=lambda *args: print("error", args), on_close=lambda *args: print("close", args),
+            on_message=on_message, 
+            header={"Origin": self._baseurl}
+        )
+        ws.run_forever(sslopt={"context": CreateSSLAdapterCF.ssl_context}, suppress_origin=True)
         
         return email_data
         
@@ -1349,25 +1405,19 @@ class _Solucioneswc:
 
             elif msg.startswith("2"): # ping
                 ws.send("3")
-
-            elif msg.startswith("40"): # sid response
-                ws.send('42["initialize_app"]')
-
+            
             elif msg.startswith("42"):
                 data = json.loads(msg[2:])
-                
-                if data[0] == "new_message_notify":
+
+                if data[0] == "new_message_notify": # new email
                     nonlocal email_data
                     email_data = {
-                        "id": str(data[1]["email_message"]["id"]),
+                        "id": data[1]["email_message"]["id"],
                         "time": data[1]["email_message"]["date"],
-                        "from": data[1]["email_message"]["sender"]["text"],
+                        "from": data[1]["email_message"]["sender"]["value"][0]["address"],
                         "subject": data[1]["email_message"]["subject"]
                     }
-                    if not return_content:
-                        ws.close()
-                    
-                    ws.send("42"+json.dumps([
+                    ws.send('421'+json.dumps([
                         "get_email_message",
                         {
                             "email_address": self.email,
@@ -1375,20 +1425,24 @@ class _Solucioneswc:
                             "email_message_type": "inbound"
                         }
                     ]))
-
-                elif data[0] == "open_message": # only happens after new_message_notify so we can assume email_data exists
-                    email_data["content"] = data[1]["email_message_data"]["data"]["content"]
-                    ws.close()
-
+            
+            elif msg.startswith("431"): # email content
+                data = json.loads(msg[3:])[0]
+                email_data["content"] = data["email_message_data"]["data"]["content"]
+                ws.close()
+                    
             if timeout > 0 and time()-start >= timeout:
                 ws.close()
-
+                    
         email_data = None
-        ws = websocket.WebSocketApp(f"wss://ws.solucioneswc.com:2053/socket.io/?user_token=empty&visitor_token={self._token}&emails_list=empty&page_type=inbox&EIO=4&transport=websocket", 
-                                    on_error=lambda *args: ws.close(), on_message=on_message, 
-                                    header={"Origin": self._baseurl}
-                                    )
-        ws.run_forever(suppress_origin=True)
+
+        ws = websocket.WebSocketApp(
+            f"wss://tm-app.solucioneswc.com:2053/socket.io/?user_token=empty&visitor_token={self._token}&email_token=empty&page_type=inbox&EIO=4&transport=websocket", 
+            # on_error=lambda *args: print("error", args), on_close=lambda *args: print("close", args),
+            on_message=on_message, 
+            header={"Origin": self._baseurl}
+        )
+        ws.run_forever(sslopt={"context": CreateSSLAdapterCF.ssl_context}, suppress_origin=True)
         
         return email_data
     
@@ -1401,7 +1455,7 @@ class _Wptempmail_etc(_WaitForMail):
 
         self._session = requests.Session()
         self._session.headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
+            "User-Agent": GLOBAL_UA
         }
 
         
@@ -1516,6 +1570,17 @@ class _Mailtm_etc:
         self._session.headers["Authorization"] = "Bearer " + self._token
 
 
+    @staticmethod
+    def get_valid_domains(base_url: str) -> list[str]:
+        """
+        Returns a list of valid domains of the service (format: abc.xyz) as a list
+        """
+        
+        r = requests.get(base_url+"/domains")
+        if r.ok:
+            return [domain["domain"] for domain in r.json()["hydra:member"]]
+
+
     def get_mail_content(self, mail_id: str) -> str:
         """
         Returns the content of a given mail_id\n
@@ -1595,6 +1660,10 @@ class _Tmmail_etc(_WaitForMail):
         self._baseurl = base_url
 
         self._session = requests.Session()
+        self._session.headers = {
+            "User-Agent": GLOBAL_UA
+        }
+        self._session.mount("https://", SSLAdapterCF)
 
         r = self._session.get(self._baseurl)
         if not r.ok:
@@ -1639,3 +1708,169 @@ class _Tmmail_etc(_WaitForMail):
                 "subject": email["subject"],
                 "content": email["content"]
             } for email in r.json()["messages"]]
+        
+
+class _Eztempmail_etc(_WaitForMail):
+    def __init__(self, base_url, name: str=None, domain: str=None, exclude: list[str]=None):
+        """
+        Generate an inbox\n
+        Args:\n
+        name - name for the email, if None a random one is chosen\n
+        domain - the domain to use, domain is prioritized over exclude\n
+        exclude - a list of domain to exclude from the random selection\n
+        info: the custom name and domain is normally locked behind a (luckily clientsided) paywall
+        """
+        super().__init__(-1)
+
+        self._BASE_URL = base_url
+
+        self._session = requests.Session()
+        
+        self._session.headers = {
+            "User-Agent": GLOBAL_UA
+        }
+        
+        r = self._session.get(self._BASE_URL)
+        if not r.ok:
+            raise Exception("Failed to create email, status", r.status_code)
+
+        self._token = BeautifulSoup(r.text, "lxml").find("meta", {"name": "csrf-token"})["content"]
+        r = self._session.post(self._BASE_URL+"/get_messages", data={
+            "_token": self._token,
+        })
+        if not r.ok:
+            raise Exception("Failed to create email, status", r.status_code)
+        
+        
+        if not domain and not name and not exclude:    
+            data = r.json()
+            self.email: str = data["mailbox"]
+            self.name, self.domain = self.email.split("@", 1)
+        
+        else:
+            self.name, self.domain, self.email, self.valid_domains = _generate_user_data(name, domain, exclude, self.get_valid_domains())
+
+            r = self._session.post(self._BASE_URL+"/change", data={
+                "_token": self._token,
+                "name": self.name,
+                "domain": self.domain
+            })
+
+            if not r.ok:
+                raise Exception(f"Something went wrong on Email Creation, status: {r.status_code}, response content:\n{r.text}")
+            
+            r = self._session.post(self._BASE_URL+"/get_messages", data={
+                "_token": self._token,
+            })    
+            if not r.ok:
+                raise Exception("Failed to create email, status", r.status_code)
+
+            data = r.json()
+            self.email: str = data["mailbox"]
+            self.name, self.domain = self.email.split("@", 1)
+
+
+    @staticmethod
+    def get_valid_domains(base_url: str) -> list[str]:
+        """
+        Returns a list of valid domains of the service (format: abc.xyz) as a list
+        """
+        r = requests.get(base_url+"/change")
+        if r.ok:
+            soup = BeautifulSoup(r.text, "lxml")
+            return [domain["value"] for domain in soup.find("select", {"name": "domain"}).findChildren("option")]
+        
+
+    def get_inbox(self) -> list[dict]:
+        """
+        Returns the inbox of the email as a list with mails as dicts list[dict, dict, ...]
+        """
+
+        r = self._session.post(self._BASE_URL+"/get_messages", data={
+            "_token": self._token,
+        })
+        if r.ok:
+            return [{
+                "id": email["id"],
+                "from": email["from_email"],
+                "subject": email["subject"],
+                "content": email["content"],
+            } for email in r.json()["messages"]]
+
+
+
+class _Web(_WaitForMail):
+    def __init__(self, urls, name: str=None, domain: str=None, exclude: list[str]=None):
+        """
+            Generate an inbox\n
+            Args:\n
+            name - name for the email, if None a random one is chosen\n
+            domain - the domain to use, domain is prioritized over exclude\n
+            exclude - a list of domain to exclude from the random selection\n
+        """
+        super().__init__(-1)
+
+        self.urls = urls
+
+        self._session = requests.Session()
+
+        r = self._session.get(self.urls["base"])
+        if not r.ok:
+            raise Exception(f"Something went wrong on Email Creation, status: {r.status_code}, response content:\n{r.text}")
+        
+        soup = BeautifulSoup(r.text, "lxml")
+        self._token = json.loads(soup.find("script", {"id": "__NUXT_DATA__"}).string)[-1]
+        self._session.headers = {
+            "Authorization": "Bearer " + self._token
+        }
+
+        valid_domains = json.loads(r.text.rsplit('emailDomains:"', 1)[1].split("]", 1)[0].replace('\\"', '"')+"]")
+        self.name, self.domain, self.email, self.valid_domains = _generate_user_data(name, domain, exclude, valid_domains)
+
+    @staticmethod
+    def __generate_x_headers():
+        return {
+            "x-request-id": ''.join(f'{random.randint(0, 255):02x}' for _ in range(16)),
+            "x-timestamp": f"{time():.0f}",
+        }
+
+    @staticmethod
+    def get_valid_domains(url) -> list[str]:
+        """
+        Returns a list of valid domains of the service (format: abc.xyz) as a list.
+        """
+
+        r = requests.get(url)
+        if r.ok:
+            return json.loads(r.text.rsplit('emailDomains:"', 1)[1].split("]", 1)[0].replace('\\"', '"')+"]")
+
+
+    def get_inbox(self) -> list[dict]:
+        """
+        Returns the inbox including the content
+        Args:\n
+        """
+        
+        r = self._session.get(f"{self.urls['api']}/api/v1/mailbox/{self.name}%40{self.domain}", headers=self.__generate_x_headers())
+        if r.ok:
+            return [{
+                "id": email["id"],
+                "from": email["from"],
+                "subject": email["subject"],
+                "date": email["date"],
+            } for email in r.json()]
+        
+
+    def get_mail_content(self, mail_id: str) -> str:
+        """
+        Returns the content of a given mail_id as a string\n
+        Args:\n
+        mail_id - the id of the mail you want the content of
+        """
+
+        r = self._session.get(f"{self.urls['api']}/api/v1/mailbox/{self.name}%40{self.domain}/{mail_id}", headers=self.__generate_x_headers())
+        if r.ok:
+            data = r.json()
+            return data["body"].get("html", data["body"]["text"])
+        
+

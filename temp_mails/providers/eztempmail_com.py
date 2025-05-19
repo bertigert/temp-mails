@@ -1,31 +1,20 @@
-from bs4 import BeautifulSoup
-import requests
+from .._constructors import _Eztempmail_etc
 
-from .._constructors import _Fake_trash_mail
+class Eztempmail_com(_Eztempmail_etc):
+    """An API Wrapper around the https://www.eztempmail.com/ website. Has potential to fail, work with retries in get_inbox"""
 
-class Eztempmail_com(_Fake_trash_mail):
-    """An API Wrapper around the https://www.eztempmail.com/ website"""
+    _BASE_URL = "https://www.eztempmail.com"
 
-    def __init__(self, name: str=None, domain: str=None, exclude: list[str]=None):
+    def __init__(self, name: str=None, domain:str=None, exclude: list[str]=None):
         """
-            Generate an inbox\n
-            Args:\n
-            name - name for the email, if None a random one is chosen\n
-            domain - the domain to use, domain is prioritized over exclude\n
-            exclude - a list of domain to exclude from the random selection\n
+        Generate an inbox\n
+        Args:\n
+        name - name for the email, if None a random one is chosen\n
+        domain - the domain to use, domain is prioritized over exclude. There is no validation for the domain\n
+        exclude - a list of domain to exclude from the random selection\n
         """
-        super().__init__(base_url="https://www.eztempmail.com", name=name, domain=domain, exclude=exclude)
+        super().__init__(base_url=self._BASE_URL, name=name, domain=domain, exclude=exclude)
 
-    
-    @staticmethod
-    def get_valid_domains() -> list[str]:
-        """
-        Returns a list of valid domains of the service (format: abc.xyz) as a list
-        """
-
-        r = requests.get("https://www.eztempmail.com/change")
-        if r.ok:
-            if "Bot Verification" in r.text:
-                raise Exception("Error, you need to verify Captcha manually on https://www.eztempmail.com.") 
-            soup = BeautifulSoup(r.text, "lxml")
-            return [domain.text for domain in soup.find("select", {"name": "domain"}).findChildren("option")]
+    @classmethod
+    def get_valid_domains(cls) -> list[str]:
+        return cls.__bases__[0].get_valid_domains(cls._BASE_URL)

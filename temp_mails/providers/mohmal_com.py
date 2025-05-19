@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 
-from .._constructors import _WaitForMail, _generate_user_data, _deCFEmail
+from .._constructors import _WaitForMail, _generate_user_data, _deCFEmail, GLOBAL_UA
 
 class Mohmal_com(_WaitForMail):
     """An API Wrapper around the https://www.mohmal.com/ website"""
@@ -18,7 +18,7 @@ class Mohmal_com(_WaitForMail):
 
         self._session = requests.Session()
         self._session.headers = {
-           "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36"
+           "user-agent": GLOBAL_UA
         }
         
         self.name, self.domain, self.email, self.valid_domains = _generate_user_data(name, domain, exclude, self.get_valid_domains())
@@ -35,7 +35,7 @@ class Mohmal_com(_WaitForMail):
         """
 
         r = requests.get("https://www.mohmal.com/en", headers={
-            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36"
+            "user-agent": GLOBAL_UA
         })
 
         if r.ok:
@@ -81,4 +81,4 @@ class Mohmal_com(_WaitForMail):
                 emails.append(data)
 
             return emails
-Mohamal_com = Mohmal_com 
+Mohamal_com: Mohmal_com = Mohmal_com 

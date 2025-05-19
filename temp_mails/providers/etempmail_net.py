@@ -1,4 +1,3 @@
-from typing import Literal
 import json
 
 from bs4 import BeautifulSoup
@@ -9,7 +8,9 @@ from .._constructors import _Livewire
 class Etempmail_net(_Livewire):
     """An API Wrapper around the https://etempmail.net/ website"""
 
-    def __init__(self, name: str=None, domain: str=None, exclude: list[str]=None, life_time: Literal[5, 10, 15, 20, 30, 60]=None):
+    _BASE_URL = "https://etempmail.net/"
+
+    def __init__(self, name: str=None, domain: str=None, exclude: list[str]=None):
         """
             Generate an inbox\n
             Args:\n
@@ -21,19 +22,19 @@ class Etempmail_net(_Livewire):
         
         super().__init__(
             urls={
-                "base": "https://etempmail.net/" + ((str(life_time) + "minutemail") if life_time else ""),
-                "app": "https://etempmail.net/livewire/message/frontend.app",
-                "actions": "https://etempmail.net/livewire/message/frontend.actions_10minutemail"
+                "base": self._BASE_URL,
+                "app": self._BASE_URL+"/livewire/message/frontend.app",
+                "actions": self._BASE_URL+"/livewire/message/frontend.actions"
             },
             order=-1, name=name, domain=domain, exclude=exclude
         )
 
-    @staticmethod
-    def get_valid_domains() -> list[str] | None:
+    @classmethod
+    def get_valid_domains(cls) -> list[str] | None:
         """
             Returns a list of a valid domains, None if failure
         """
-        r = requests.get("https://etempmail.net/10minutemail")
+        r = requests.get(cls._BASE_URL+"/10minutemail")
        
         if r.ok:
             soup = BeautifulSoup(r.text, "lxml")

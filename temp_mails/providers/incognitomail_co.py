@@ -8,11 +8,13 @@ from .._constructors import _WaitForMail
 
 
 def _encode_timestamp_data(_data):
-    _data["key"] = hmac.new(b"2N(PphSU<U*?Uh]pd{4--V", json.dumps(_data, separators=(",", ":")).encode("utf-8"), sha256).hexdigest() # not sure if the key is fully static
+    _data["key"] = hmac.new(b"2N(PphSU<U*?Uh]pd{4--V", json.dumps(_data, separators=(",", ":")).encode("utf-8"), sha256).hexdigest() # not sure if the key is fully static, has been for like half a year
     return _data
 
 class Incognitomail_co(_WaitForMail):
     """An API Wrapper around the https://incognitomail.co/ website"""
+
+    _BASE_URL = "https://api.incognitomail.co"
 
     def __init__(self):
         """
@@ -27,7 +29,7 @@ class Incognitomail_co(_WaitForMail):
             "ts": int(time() * 1000)
         })
 
-        r = self._session.post("https://api.incognitomail.co/inbox/v2/create", data=json.dumps(data), headers= {
+        r = self._session.post(self._BASE_URL+"/inbox/v2/create", data=json.dumps(data), headers= {
             'content-type': 'text/plain;charset=UTF-8',
         })        
         if not r.ok:
@@ -38,6 +40,11 @@ class Incognitomail_co(_WaitForMail):
         self.name, self.domain = self.email.split("@", 1)
         self._token = data["token"]
         
+    @staticmethod
+    def get_valid_domains() -> list[str]:
+        """Returns a list of valid domains of the service. This website only has 1 domain"""
+
+        return ["mailfast.pro"]
 
     def get_mail_content(self, mail_id: str) -> str:
         """
@@ -63,7 +70,7 @@ class Incognitomail_co(_WaitForMail):
             "ts": int(time() * 1000)
         })
 
-        r = self._session.post("https://api.incognitomail.co/inbox/v1/list", json=data)
+        r = self._session.post(self._BASE_URL+"/inbox/v1/list", json=data)
         
         if r.ok:
             return [{

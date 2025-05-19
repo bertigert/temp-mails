@@ -6,6 +6,8 @@ from .._constructors import _WaitForMail, _generate_user_data
 class Guerillamail_com(_WaitForMail):
     """An API Wrapper around the https://www.guerrillamail.com website"""
 
+    _BASE_URL = "https://www.guerrillamail.com"    
+
     def __init__(self, name: str=None, domain:str=None, exclude: list[str]=None):
         """
         Generate an inbox\n
@@ -19,7 +21,7 @@ class Guerillamail_com(_WaitForMail):
         self._session = requests.Session()
         self.name, self.domain, self.email, self.valid_domains = _generate_user_data(name, domain, exclude, self.get_valid_domains())
         
-        r = self._session.post("https://www.guerrillamail.com/ajax.php?f=set_email_user", data={
+        r = self._session.post(self._BASE_URL+"/ajax.php?f=set_email_user", data={
             "email_user": self.name,
             "lang": "en",
             "site": "guerrillamail.com",
@@ -29,17 +31,18 @@ class Guerillamail_com(_WaitForMail):
             raise Exception("Failed to create email, status", r.status_code)
         
     
-    @staticmethod
-    def get_valid_domains() -> list[str]:
+    @classmethod
+    def get_valid_domains(cls) -> list[str]:
         """
         Returns a list of valid domains of the service (format: abc.xyz) as a list
         """
         
-        r = requests.get("https://www.guerrillamail.com/")
+        r = requests.get(cls._BASE_URL)
         if r.ok:
             soup = BeautifulSoup(r.text, "lxml")
             domains = soup.find("select", {"class": "strong"})
             return [domain["value"] for domain in domains.findChildren("option")]
+
 
     def get_mail_content(self, mail_id: str) -> str:
         """
@@ -48,7 +51,7 @@ class Guerillamail_com(_WaitForMail):
         mail_id - the id of the mail you want the content of
         """
 
-        r = self._session.get(f"https://www.guerrillamail.com/ajax.php?f=fetch_email&email_id=mr_{mail_id}&site=guerrillamail.com&in={self.name}")
+        r = self._session.get(f"{self._BASE_URL}/ajax.php?f=fetch_email&email_id=mr_{mail_id}&site=guerrillamail.com&in={self.name}")
         if r.ok:
             return r.json()["mail_body"]
 
@@ -58,7 +61,7 @@ class Guerillamail_com(_WaitForMail):
         Returns the inbox of the email as a list with mails as dicts list[dict, dict, ...]
         """
 
-        r = self._session.get("https://www.guerrillamail.com/ajax.php?f=get_email_list&offset=0&site=guerrillamail.com&in="+self.name)
+        r = self._session.get(f"{self._BASE_URL}/ajax.php?f=get_email_list&offset=0&site=guerrillamail.com&in={self.name}")
         if r.ok:
             emails = r.json()["list"] # we just assume that there are no emails in the email
             

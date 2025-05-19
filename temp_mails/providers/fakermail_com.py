@@ -6,6 +6,8 @@ from .._constructors import _WaitForMail, _generate_user_data
 class Fakermail_com(_WaitForMail):
     """An API Wrapper around the https://fakermail.com/ website"""
 
+    _BASE_URL = "https://fakermail.com"
+
     def __init__(self, name: str=None, domain:str=None, exclude: list[str]=None):
         """
         NOTE: you cannot receive emails atm so i cannot test anything really. It should work, but i am not sure if the email content in in the inbox.
@@ -22,18 +24,18 @@ class Fakermail_com(_WaitForMail):
         self.name, self.domain, self.email, self.valid_domains = _generate_user_data(name, domain, exclude, self.get_valid_domains())
         self._email_hash = sha1(self.email.encode()).hexdigest()
 
-    @staticmethod
-    def get_valid_domains() -> list[str]:
+    @classmethod
+    def get_valid_domains(cls) -> list[str]:
         """
         Returns a list of valid domains of the service (format: abc.xyz) as a list
         """
 
-        r = requests.get("https://fakermail.com/api/domains")
+        r = requests.get(cls._BASE_URL+"/api/domains")
         if r.ok:
             return r.json()
 
 
-    def get_mail_content(self, mail_id: int) -> dict:
+    def get_mail_content(self, mail_id: int) -> None:
         """
         Not sure if needed since no testing possible\n
         Returns the content of a given mail_id\n
@@ -48,7 +50,6 @@ class Fakermail_com(_WaitForMail):
         """
         Returns the inbox of the email as a list with mails as dicts list[dict, dict, ...]
         """
-
-        r = self._session.get("https://fakermail.com/api/mail/"+self._email_hash)
+        r = self._session.get(f"{self._BASE_URL}/api/mail/{self._email_hash}")
         if r.ok:
             return r.json()

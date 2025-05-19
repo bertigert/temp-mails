@@ -3,14 +3,14 @@
 #### A basic wrapper around almost all temp mail sites on google, aiming to provide an almost identical api for every site.
 
 The main purpose of this is to provide an easy way to use different temp mail services with almost the same python api, meaning little refactoring is needed.\
-If there are any issues, please send me an email (bertigert@riseup.net) or create an issue, i cant test every email for every change I or the host makes since this library supports all temp mail providers which I could find on google (see below) which work and are not captcha protected.
+If there are any issues, create an issue, i cant test every email for every change I or the host makes since this library supports all temp mail providers which I could find on google (see below) which work and are not captcha protected.
 ## Installation
 While every python3 version _should_ hypothetically work, python 3.12 is best
-```
+```bash
 pip install temp-mails
 ```
 ### Requirements
-```
+```bash
 pip install requests beautifulsoup4 lxml websocket-client==1.7.0
 ```
 Note that you may need to uninstall all websocket packages in order for websocket-client to function properly
@@ -23,6 +23,7 @@ from temp_mails import Tenminemail_com
 from send_email import send_email_sync
 
 # Generate a random email address
+# It is generally recommended to let the site determine a random email address, as custom ones often require additional requests.
 mail = Tenminemail_com()
 # Get the email (e.g. example, examplehost, example@examplehost.com)
 print(mail.name, mail.domain, mail.email)
@@ -42,8 +43,8 @@ if data: # It returns None if something unexpected happens
     print(mail.get_mail_content(message_id=data["id"]))
 ```
 
-The wrapper api for each email host is very similar, so little refactoring is needed in order to change the email host. However, the email data may change in format or similar. One email host could just return a string with the html content of the email, another one could return a dict with subject, content etc, I will probably add better support for that at some point.\
-Also note that only some hosts support user defined names/domains.\
+The wrapper api for each email host is very similar, so little refactoring is needed in order to change the email host. However, the email data may change in format or similar. One email host could just return a string with the html content of the email, another one could return a dict with subject, content etc.\
+Also note that only some hosts support user defined names/domains. It is generally recommended to let the site determine a random email address, as custom ones often require additional requests.\
 Also note that the built in wait_for_mail can break if there are too many emails or too many emails at once. You can implement you own custom function for that case. It works for all my use cases though (verifications etc). Many built in wait_for_new_email functions have optimizations in them, so you should use them unless absolutely necessary.\
 This libray is designed with minimal error handling built in. This is because if an error occurs in the library, something broke and it wouldn't work anyways, there is no way for automatic recovery since it is all based on 3rd party sites.
 
@@ -97,142 +98,153 @@ data = mail.wait_for_new_email(start_length=old_length)
 print(data)
 ```
 
-## Supported Working Unique Sites (107)
+## Supported Working Unique Sites
+State as of 19.05.2025 (~76 sites)
+
 - https://10minemail.com/ - semi-official
 - https://10minutemail.com/ - unofficial
-- https://internxt.com/temporary-email - unofficial, weird ratelimit
-- https://www.minuteinbox.com/ - unofficial
-- https://temp-mail.io/ - unofficial
-- https://temp-mail.org/ - semi-official
-- https://temp-mailbox.com/, https://dismailbox.com/ - unofficial
-- https://10minutesemail.net/ - unofficial
-- https://etempmail.net/ - unofficial
-- https://www.disposablemail.com/ - unofficial
-- https://www.emailondeck.com/ - unofficial
-- https://1secmail.com/, https://www.tempemailpro.com/ (uses 1secmail) - official
-- https://www.mohmal.com/en/inbox - unofficial
-- https://www.fakemail.net/ - unofficial
-- https://tempmail.email/ - unofficial
-- https://tempmail.plus/ - unofficial
-- https://generator.email/ - unofficial
-- https://cryptogmail.com/ - unofficial
-- https://mail.tm/ - official/semi-official
-- https://temp-inbox.com/ - unofficial
-- https://mailhole.de/ - unofficial
-- https://tmailor.com/ - unofficial, ~5 emails/IP
-- https://tmail.ai/ - unofficial
-- https://cloudtempmail.com/ - unofficial
-- https://luxusmail.org/ - unofficial
-- https://muellmail.com/ - unofficial
-- https://www.eztempmail.com/ - unofficial
-- https://tempail.com/ - unofficial
-- https://tempmail.ninja/ - unofficial
-- https://upxmail.com/ - unofficial
-- https://www.trash-mail.com/ - unofficial
-- https://tempemailfree.com/ - unofficial
-- https://tempr.email/ - unofficial
-- https://tempmail.net/ - unofficial
-- https://www.guerrillamail.com/ - semi-official
-- https://tm-mail.com/ - unofficial
-- https://tempmail.lol/ - official
-- https://yopmail.com/ - unofficial, you need to do manual captcha once
-- https://etempmail.com/ - unofficial
-- https://tmail.gg/ - unofficial
-- https://mailtemp.uk/ - unofficial
-- https://mostakbile.com/ - unofficial
-- https://tempmails.net/ - unofficial
-- https://temp-mail.gg/ - unofficial
-- https://maillog.org/ - unofficial
-- https://temp-mail.id/ - unofficial
-- https://zemail.me/ - unofficial
-- https://tempmailso.com/ - unofficial
-- https://mail-temp.com/ - unofficial
-- https://www.fakemailgenerator.com/ - unofficial
-- https://correotemporal.org/ - unofficial
-- https://www.byom.de/ - unofficial
-- https://moakt.com/ - unofficial
-- https://inboxes.com/ - semi-official
-- https://dropmail.me/ - semi-official
-- https://gmailcity.com/ - unofficial
-- https://mailgolem.com/ - unofficial
-- https://anonymmail.net/ - unofficial
-- https://emailfake.com/ - unofficial
-- https://disposableemail.co/ - unofficial
-- https://temp-inbox.me/ - unofficial
-- https://www.tempo-mail.com/ - unofficial
-- https://www.txen.de/ - unofficial
-- https://tempm.com/ - unofficial
-- https://www.trashmail.de/ - semi-official
-- https://incognitomail.co/ - unofficial
 - https://10minutemail.one/ - unofficial
-- https://mail.gw/ - official/semi-official
-- https://email10min.com/ - unofficial
-- https://10-minutemail.net - unofficial
-- https://lroid.com/ - unofficial, same domain as haribu.net
-- https://www.10minuteemails.com/ - unofficial
-- https://tmpmail.co/ - unofficial
-- https://mailsac.com/ - unofficial
-- https://www.fumail.co/ - unofficial
-- https://tempomail.top/ - unofficial
-- https://mail.td/ - unofficial
-- https://www.mintemail.com/ - unofficial
-- https://tmail.io/, https://tmail.io/temporary-disposable-gmail - unofficial
-- https://segamail.com/ - unofficial
-- https://www.mail7.io/ - unofficial
-- https://mail4qa.com/ - unofficial
-- https://treemail.pro/ - unofficial
-- https://inboxkitten.com/ - unofficial
-- https://www.tempmailinbox.com/ - unofficial
+- https://10minutesemail.net/ - unofficial
+- https://anonymmail.net/ - unofficial
+- https://burnermailbox.com/ - unofficial
+- https://byom.de/ - unofficial
+- https://correotemporal.org/ - unofficial
+- https://cryptogmail.com/ - unofficial
+- https://disposablemail.com/ - unofficial
+- https://dropmail.me/ - semi-official
+- https://email-fake.com/ - unofficial
+- https://emailfake.com/ - unofficial
+- https://emailondeck.com/ - unofficial
+- https://etempmail.com/ - unofficial
+- https://eyepaste.com/ - unofficial
+- https://eztempmail.com/ - unofficial
+- https://fakemail.net/ - unofficial
+- https://fakemailgenerator.com/ - unofficial
+- https://fumail.co/ - unofficial
+- https://generator.email/ - unofficial
+- https://guerrillamail.com/ - semi-official
 - https://harakirimail.com/ - unofficial
+- https://inboxes.com/ - semi-official
+- https://incognitomail.co/ - unofficial
+- https://internxt.com/temporary-email - unofficial (= mail.tm)
+- https://mail-temp.com/ - unofficial
+- https://mail.gw/ - official/semi-official
+- https://mail.td/ - unofficial
+- https://mail.tm/ - official/semi-official
+- https://maildax.com/ - unofficial
+- https://mailforspam.com/ - unofficial
+- https://mailhole.de/ - unofficial
+- https://mailinator.com/ - semi-official
 - https://mailnesia.com/ - unofficial
 - https://mailper.com/ - unofficial
-- https://www.mailforspam.com/ - unofficial
-- https://tempemail.co/ - unofficial
-- https://www.tempinbox.xyz/ - unofficial
-- https://www.eyepaste.com/ - unofficial
-- https://email-fake.com/ - unofficial
-- https://www.mailinator.com/ - semi-official
-- https://expressinboxhub.com/ - unofficial
-- https://burnermailbox.com/ - unofficial
-- https://tempemailgen.com/ - unofficial
+- https://mailsac.com/ - unofficial
+- https://mailtemp.uk/ - unofficial
+- https://mintemail.com/ - unofficial
+- https://minuteinbox.com/ - unofficial
+- https://moakt.com/ - unofficial
+- https://mohmal.com/ - unofficial
+- https://mostakbile.com/ - unofficial
+- https://muellmail.com/ - unofficial
+- https://noopmail.org/ - unofficial
 - https://priyo.email/ - unofficial
-- https://tempp-mails.com/ - unofficial
-- https://fmail.sbs/ - unofficial
-- https://trashmail.ws/ - unofficial
-- https://temp-email.info/ - unofficial
-- https://www.mailtemp.net/ - unofficial
-- https://haribu.net/ - unofficial, same domain as lroid.com
-- https://tempmailbox.net - unofficial
-- https://tempmailer.net/ - unofficial
+- https://rainmail.xyz/ - unofficial
+- https://temp-inbox.com/ - unofficial
+- https://temp-mail.gg/ - unofficial
+- https://temp-mail.id/ - unofficial
+- https://temp-mail.io/ - unofficial
+- https://temp-mail.org/ - semi-official
+- https://tempail.com/ - unofficial
+- https://tempemail.co/ - unofficial
+- https://tempemailfree.com/ - unofficial
+- https://tempinbox.xyz/ - unofficial
+- https://tempm.com/ - unofficial
 - https://tempmail.cc/ - unofficial
+- https://tempmail.email/ - unofficial (= mail.tm)
+- https://tempmail.lol/ - official
+- https://tempmail.ninja/ - unofficial
+- https://tempmail.plus/ - unofficial
+- https://tempmailbox.net - unofficial
+- https://tempomail.top/ - unofficial
+- https://temporarymail.com/ - unofficial
+- https://tempr.email/ - unofficial
+- https://tm-mail.com/ - unofficial
+- https://tmail.gg/ - unofficial
+- https://tmail.io/, https://tmail.io/temporary-disposable-gmail - unofficial
+- https://tmailor.com/ - unofficial, ~5 emails/IP
+- https://tmpmail.co/ - unofficial
+- https://trashmail.de/ - semi-official
+- https://trashmail.ws/ - unofficial
+- https://txen.de/ - unofficial
+- https://yopmail.com/ - unofficial, you need to do manual captcha once
+- https://zemail.me/ - unofficial
 
 > unofficial = we use no official API, because the website does not offer one (at least for free)\
 > semi-official = website hat an official API, but we don't use it, often because it is using RapidAPI, broken or requires an API key\
 > official = we use the websites official API (RapidAPI or not)\
-> captcha = requires you to go onto the website and solve a captcha/verify your browser on the same IP. After that it should work for some requests/minutes. You may need to manually add a captcha response. In some cases, it just does not work anymore, I won't remove the script though as the "knowledge" could still be interesting.
-
+> captcha = requires you to go onto the website and solve a captcha/verify your browser on the same IP. After that it should work for some requests/minutes. You may need to manually add a captcha response. This is only supported for some sites, because it's too much effort.
 
 ### In Progress
-- None
+- maybe some new sites
 
 
-### Sites which worked at some point (15)
-- https://tempmail.adguard.com/ - unofficial, captcha
-- https://tempmailbeast.com/ - unofficial, doesn't provide service anymore?
-- https://tempmail.gg/ - unofficial, offline
-- https://tempmailers.com/ - unofficial, offline/suspended
-- https://schutz-mail.de/ - unofficial, offline
-- https://maildax.com/ - unofficial, captcha
-- https://www.temils.com/ - unofficial, offline
-- https://www.minutemailbox.com/ - unofficial, broken
-- https://fakermail.com/ - unofficial, offline
-- http://mailcatch.com/ - unofficial, offline
-- https://rainmail.xyz/ - unofficial, offline
-- https://www.crazymailing.com/ - unofficial, offline
-- https://getnada.cc/ - official, broken
-- https://wp-temp-mail.com/ - unofficial, offline
-- https://temp-mailbox.net/ - unofficial, offline
+### Sites which worked at some point
+State as of 19.05.2025 (~49 sites)
 
+- https://1secmail.com/ - official - OFF
+- https://10-minutemail.net - unofficial - CAP/CF
+- https://10minuteemails.com/ - unofficial - BS
+- https://cloudtempmail.com/ - unofficial, CAP/CF
+- https://crazymailing.com/ - unofficial - CAP/CF
+- https://email10min.com/ - unofficial - NE
+- https://email-free.online/ - unofficial - OFF
+- https://etempmail.net/ - unofficial - CAP/CF
+- https://expressinboxhub.com/ - CAP
+- https://fakermail.com/ - unofficial - NE
+- https://fmail.sbs/ - unofficial - OFF
+- https://getnada.cc - semi-official - NE/OFF (= email-free.online)
+- https://gmailcity.com/ - unofficial - OFF
+- https://haribu.net/ - unofficial - NE
+- https://inboxkitten.com/ - unofficial - NE
+- https://lroid.com/ - unofficial - NE (= haribu.net)
+- https://luxusmail.org/ - unofficial - CAP/CF
+- https://mail4qa.com/ - unofficial - NE
+- https://mail7.io/ - unofficial - OFF
+- http://mailcatch.com/ - unofficial - NE
+- https://mailgolem.com/ - unofficial - NE
+- https://maillog.org/ - unofficial - OFF
+- https://mailtemp.net/ - unofficial - NE
+- https://minutemailbox.com/ - unofficial - BS
+- https://schutz-mail.de/ - unofficial - OFF
+- https://segamail.com/ - unofficial - BS
+- https://temils.com/ - unofficial - OFF
+- https://temp-email.info/ - unofficial - CAP
+- https://temp-inbox.me/ - unofficial - CAP/CF
+- https://temp-mailbox.net/ - unofficial - NE
+- https://tempemailgen.com/ - unofficial - CAP/CF
+- https://tempmail.adguard.com/ - unofficial - CAP
+- https://tempmail.gg/ - unofficial - NE
+- https://tempmail.guru/ - unkown - OFF
+- https://tempmail.net/ - unofficial - NE
+- https://tempmailbeast.com/ - unofficial - OFF
+- https://tempmailer.net/ - unofficial - OFF
+- https://tempmailers.com/ - unofficial - OFF
+- https://tempmailinbox.com/ - unofficial - OFF
+- https://tempmails.net/ - unofficial - NE
+- https://tempmailso.com/ - unofficial - OFF
+- https://tempo-mail.com/ - unofficial - OFF
+- https://tempp-mails.com/ - unofficial - CAP/CF
+- https://temprmail.com/ - broken - OFF
+- https://tmail.ai/ - unofficial - OFF
+- https://trash-mail.com/ - unofficial - OFF
+- https://treemail.pro/ - unofficial - OFF
+- https://upxmail.com/ - unofficial - OFF
+- https://wp-temp-mail.com/ - OFF
+
+> NE = Is online, but receives no emails\
+> BS = Site is broken\
+> CAP/CF = Captcha in combination with cloudflare\
+> CAP = Captcha\
+> OFF = Complete site is down/does not provide temp mail service\
 
 ### Websites I won't add
 - Every website which requires an account/api key in order to use it
@@ -263,5 +275,5 @@ print(data)
 - https://smailpro.com/ - captcha, rapid api
 - https://mytemp-mail.com/ - captcha
 - https://www.mailmenot.io/ - down
-- https://temprmail.com/ - broken
 - https://www.no-spammers.com/ - captcha (easy tho)
+- https://www.emailgenerator.org/ - captcha

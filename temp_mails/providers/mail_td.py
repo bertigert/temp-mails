@@ -10,6 +10,8 @@ from .._constructors import _WaitForMail, _generate_user_data
 class Mail_td(_WaitForMail):
     """An API Wrapper around the https://mail.td/ website"""
 
+    _BASE_URL = "https://mail.td"
+
     def __init__(self, name: str=None, domain:str=None, exclude: list[str]=None, url: str="https://mail.td/_next/static/chunks/641-ea73fac4f93b3ddb.js"):
         """
         Generate an inbox\n
@@ -23,7 +25,7 @@ class Mail_td(_WaitForMail):
         self._session = requests.Session()
         
         self.name, self.domain, self.email, self.valid_domains = _generate_user_data(name, domain, exclude, self.get_valid_domains(url=url))
-        r = self._session.get("https://mail.td/en/mail/"+self.email)
+        r = self._session.get(self._BASE_URL+"/en/mail/"+self.email)
         if not r.ok:
             raise Exception("Failed to create email, status", r.status_code)
         
@@ -31,8 +33,8 @@ class Mail_td(_WaitForMail):
             "Authorization": "Bearer " + self._session.cookies.get("auth_token")
         }
 
-    @staticmethod
-    def get_valid_domains(url: str="https://mail.td/_next/static/chunks/641-ea73fac4f93b3ddb.js", dynamic_recovery: bool=False) -> list[str]:
+    @classmethod
+    def get_valid_domains(cls, url: str="https://mail.td/_next/static/chunks/641-ea73fac4f93b3ddb.js", dynamic_recovery: bool=False) -> list[str]:
         """
         Returns a list of valid domains of the service (format: abc.xyz) as a list\n
         Args:\n
@@ -45,15 +47,15 @@ class Mail_td(_WaitForMail):
                 raise Exception("The script url needed for valid domains changed, set dynamic_recovery to true if you want the script to try to get the new link")
         
             else:
-                r = requests.get("https://mail.td/en/mail")
+                r = requests.get(cls._BASE_URL+"/en/mail")
                 if r.ok:
                     soup = BeautifulSoup(r.text, "lxml")
                     scripts = soup.head.find_all(lambda tag: tag.name == "script" and re.match(r'^/_next/static/chunks/\d{3}-[0-9A-Fa-f]{16}\.js$', tag["src"]))
 
                     for script in scripts:
-                        r = requests.get("https://mail.td/"+script["src"])
+                        r = requests.get(f"{cls._BASE_URL}/{script["src"]}")
                         if r.ok and len(d := r.text.split("mailHosts:", 1)) > 1:
-                            return ["https://mail.td/"+script["src"], json.loads(d[1].split("]", 1)[0]+"]")]
+                            return [f"{cls._BASE_URL}/{script["src"]}", json.loads(d[1].split("]", 1)[0]+"]")]
 
                     raise Exception("Dynamic recovery failed, you'll need to find the url by yourself")
 
@@ -68,7 +70,7 @@ class Mail_td(_WaitForMail):
         mail_id - the id of the mail you want the content of
         """
 
-        r = self._session.get(f"https://mail.td/api/api/v1/mailbox/{self.email}/{mail_id}")
+        r = self._session.get(f"{self._BASE_URL}/api/api/v1/mailbox/{self.email}/{mail_id}")
         if r.ok:
             data = r.json()["body"]
             return data.get("html", data.get("text"))
@@ -79,7 +81,7 @@ class Mail_td(_WaitForMail):
         Returns the inbox of the email as a list with mails as dicts list[dict, dict, ...]
         """
 
-        r = self._session.get("https://mail.td/api/api/v1/mailbox/"+self.email)
+        r = self._session.get(f"{self._BASE_URL}/api/api/v1/mailbox/{self.email}")
         
         if r.ok:
             return [{

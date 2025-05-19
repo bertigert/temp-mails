@@ -10,6 +10,8 @@ from .._constructors import _generate_user_data
 class Inboxes_com():
     """An API Wrapper around the https://inboxes.com/ website"""
 
+    _BASE_URL = "https://inboxes.com"
+
     def __init__(self, name: str=None, domain:str=None, exclude: list[str]=None):
         """
         Generate an inbox\n
@@ -26,13 +28,13 @@ class Inboxes_com():
         if r == None:
             raise Exception("Failed to create email")
 
-    @staticmethod
-    def get_valid_domains() -> list[str]:
+    @classmethod
+    def get_valid_domains(cls) -> list[str]:
         """
         Returns a list of valid domains of the service (format: abc.xyz) as a list
         """
 
-        r = requests.get("https://inboxes.com/api/v2/domain")
+        r = requests.get(cls._BASE_URL+"/api/v2/domain")
         if r.ok:
             return [email["qdn"] for email in r.json()["domains"]]
 
@@ -44,7 +46,7 @@ class Inboxes_com():
         mail_id - the id of the mail you want the content of
         """
 
-        r = self._session.get("https://inboxes.com/api/v2/message/"+mail_id)
+        r = self._session.get(f"{self._BASE_URL}/api/v2/message/{mail_id}")
         
         if r.ok:
             data = r.json()
@@ -59,7 +61,7 @@ class Inboxes_com():
         Returns the inbox of the email as a list with mails as dicts list[dict, dict, ...]
         """
 
-        r = self._session.get(f"https://inboxes.com/api/v2/inbox/"+self.email)
+        r = self._session.get(f"{self._BASE_URL}/api/v2/inbox/{self.email}")
         if r.ok:
             return [{
                 "id": email["uid"],
@@ -81,13 +83,13 @@ class Inboxes_com():
         if timeout > 0: 
             start = time()
 
-        r = self._session.get("https://inboxes.com/socket.io/?EIO=4&transport=polling")
+        r = self._session.get(self._BASE_URL+"/socket.io/?EIO=4&transport=polling")
         if not r.ok:
             return None
         
         ws_config = json.loads(r.text[1:])
         
-        r = self._session.post("https://inboxes.com/socket.io/?EIO=4&transport=polling&sid="+ws_config["sid"], data="40")
+        r = self._session.post(self._BASE_URL+"/socket.io/?EIO=4&transport=polling&sid="+ws_config["sid"], data="40")
         if not r.ok:
             return None
         

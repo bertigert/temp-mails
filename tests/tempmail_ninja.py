@@ -1,22 +1,16 @@
-from random import choices, choice
-from string import ascii_lowercase
-
 from temp_mails import Tempmail_ninja as Mail
 from send_email import send_email_sync
 
-name, domain = "".join(choices(ascii_lowercase, k=6)), choice(Mail.get_valid_domains())
-mail = Mail(name=name, domain=domain)
-
-print(mail.email)
+mail = Mail()
 assert mail.email != "", "Mail name empty"
-assert mail.email == f"{name}@{domain}", "Mail does not match the used mail"
 
 d0 = mail.get_inbox()
 print(d0)
 assert len(d0) == 0, "Inbox not empty"
- 
+
 r = send_email_sync(mail.email)
 assert r.ok, "Failed to send email"
+
 d1 = mail.wait_for_new_email()
 print(d1)
 

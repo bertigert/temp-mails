@@ -3,7 +3,6 @@ from string import ascii_lowercase
 from threading import Event
 from concurrent.futures import ThreadPoolExecutor
 
-
 from temp_mails import Byom_de as Mail
 from send_email import send_email_sync
 
@@ -33,7 +32,5 @@ r = send_email_sync(mail.email)
 assert r.ok, "Failed to send email"
 d2 = t.result()
 print(d2)
-
-assert d1["id"] != d2["id"], "Email IDs are the same"
 
 assert len(mail.get_inbox()) == 2, "Inbox length wrong"

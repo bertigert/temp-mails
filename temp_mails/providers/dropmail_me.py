@@ -4,7 +4,6 @@ from time import time
 import requests
 import websocket
 
-
 class Dropmail_me():
     """An API Wrapper around the https://dropmail.me/ website. Very fast from experience."""
 
@@ -30,6 +29,12 @@ class Dropmail_me():
             elif r.startswith("D"):
                 self.valid_domains = r[1:].split(",")
         
+    @staticmethod
+    def get_valid_domains() -> None:
+        """There is no way to get the valid domains for this website"""
+        
+        return None
+    
     def get_mail_content(self, mail_id: str) -> str:
         """
         Returns the content of a given mail_id as a html string\n

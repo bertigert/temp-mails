@@ -3,10 +3,10 @@ import json
 from bs4 import BeautifulSoup
 import requests
 
-from .._constructors import _Livewire2
+from .._constructors import _Livewire2, GLOBAL_UA
 
 class Txen_de(_Livewire2):
-    """An API Wrapper around the https://www.txen.de/ website. From experience very fast."""
+    """An API Wrapper around the https://txen.de/ website. From experience very fast."""
 
     def __init__(self, name: str=None, domain: str=None, exclude: list[str]=None):
         """
@@ -19,12 +19,12 @@ class Txen_de(_Livewire2):
         
         super().__init__(
             urls={
-                "base": "https://www.txen.de",
-                "mailbox": "https://www.txen.de/mailbox/",
-                "app": "https://www.txen.de/livewire/message/frontend.app",
-                "actions": "https://www.txen.de/livewire/message/frontend.actions"
+                "base": "https://txen.de",
+                "mailbox": "https://txen.de/mailbox/",
+                "app": "https://txen.de/livewire/message/frontend.app",
+                "actions": "https://txen.de/livewire/message/frontend.actions"
             },
-            order=-1, name=name, domain=domain, exclude=exclude
+            order=0, name=name, domain=domain, exclude=exclude
             )
 
 
@@ -33,7 +33,7 @@ class Txen_de(_Livewire2):
         """
             Returns a list of a valid domains, None if failure
         """
-        r = requests.get("https://www.txen.de/", headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"})
+        r = requests.get("https://txen.de/", headers={"User-Agent": GLOBAL_UA})
 
         if r.ok:
             soup = BeautifulSoup(r.text, "lxml")

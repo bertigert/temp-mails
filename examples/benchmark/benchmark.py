@@ -12,9 +12,8 @@ def tprint(*args):
     print(f"[{datetime.now():%H:%M:%S}]", *args)
 
 mail_classes = []
-for mail_class in temp_mails.__all_providers__:    
+for mail_class in temp_mails.__all__:    
     exec(f"mail_classes.append(temp_mails.{mail_class})")
-
 
 def benchmark(t, mail_class, debug=False):
     try:
@@ -56,22 +55,6 @@ for mail_class in mail_classes:
     
     # blacklist
     black_list = {
-        "Internxt_com": "Hard Ratelimit",
-        "Minutemailbox_com": "Server broken",
-        "Temils_com": "Offline",
-        "Tempmail_gg": "Offline",
-        "Yopmail_com": "Captcha",
-        "Fakermail_com": "Offline",
-        "Mailcatch_com": "Offline",
-        "Rainmail_xyz": "Offline",
-        "Crazymailing_com": "Offline",
-        "Adguard_com": "Captcha",
-        "Tempmailbeast_com": "No service anymore",
-        "Tempmailers_com": "Offline",
-        "Schutzmail_de": "Offline",
-        "Maildax_com": "Captcha",
-        "Getnada_cc": "Broken",
-        "Wptempmail_com": "Offline"
     }
     if mail_class.__name__ in black_list:
         tprint(f"Not testing {mail_class.__name__} because: {black_list[mail_class.__name__]}")

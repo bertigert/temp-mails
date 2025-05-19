@@ -1,13 +1,9 @@
-import random
-from string import ascii_lowercase, digits
-import json
-
-import requests
-
 from .._constructors import _Mailtm_etc
 
 class Mail_gw(_Mailtm_etc):
     """An API Wrapper around the https://mail.gw/ website"""
+
+    _BASE_URL = "https://api.mail.gw"
 
     def __init__(self, name: str=None, domain:str=None, exclude: list[str]=None, password: str=None):
         """
@@ -20,17 +16,10 @@ class Mail_gw(_Mailtm_etc):
         """
         
         super().__init__(urls={
-            "base": "https://api.mail.gw",
-            "stream": "https://api.mail.gw"
+            "base": self._BASE_URL,
+            "stream": self._BASE_URL
         }, name=name, domain=domain, exclude=exclude)
 
-    @staticmethod
-    def get_valid_domains() -> list[str]:
-        """
-        Returns a list of valid domains of the service (format: abc.xyz) as a list
-        """
-        
-        r = requests.get("https://api.mail.gw/domains")
-        if r.ok:
-            return [domain["domain"] for domain in r.json()["hydra:member"]]  
-
+    @classmethod
+    def get_valid_domains(cls) -> list[str]:
+        return cls.__bases__[0].get_valid_domains(cls._BASE_URL)

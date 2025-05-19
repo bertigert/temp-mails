@@ -6,6 +6,8 @@ from .._constructors import _WaitForMail
 class Emailondeck_com(_WaitForMail):
     """An API Wrapper around the https://www.emailondeck.com/ website"""
 
+    _BASE_URL = "https://www.emailondeck.com"
+
     def __init__(self):
         """
         Generate a random inbox, please note that the site has a ratelimit for inboxes/hour
@@ -16,7 +18,7 @@ class Emailondeck_com(_WaitForMail):
 
         self._session = requests.Session()
     
-        r = self._session.get("https://www.emailondeck.com/ajax/ce-new-email.php")
+        r = self._session.get(self._BASE_URL+"/ajax/ce-new-email.php")
        
         if not r.ok:
             raise Exception("Failed to create email, status", r.status_code)
@@ -32,7 +34,7 @@ class Emailondeck_com(_WaitForMail):
         returns the html of the content as a BeautifulSoup Object
         """
     
-        r = self._session.get("https://www.emailondeck.com/email_iframe.php?msg_id="+str(mail_id))
+        r = self._session.get(self._BASE_URL+"/email_iframe.php?msg_id="+str(mail_id))
         if r.ok:
             soup = BeautifulSoup(r.text, "lxml")
             return soup.find("div", {"id": "inbox_message"})
@@ -42,7 +44,7 @@ class Emailondeck_com(_WaitForMail):
         Returns the inbox of the email as a list with mails as dicts list[dict, dict, ...]
         """
 
-        r = self._session.post("https://www.emailondeck.com/ajax/messages.php")
+        r = self._session.post(self._BASE_URL+"/ajax/messages.php")
         
         if r.ok:
             if r.text[0] == "0":

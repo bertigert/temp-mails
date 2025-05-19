@@ -4,4 +4,4 @@ class Fakemail_net(_Minuteinbox_etc):
     """An API Wrapper around the https://www.fakemail.net/ website"""
     
     def __init__(self):
-        super().__init__(base_url="https://www.fakemail.net")
+        super().__init__(base_url="https://www.fakemail.net", needs_cookie_and_token=True)

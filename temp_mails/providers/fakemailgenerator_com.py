@@ -1,14 +1,16 @@
 import json
+import threading
 from time import time
 from bs4 import BeautifulSoup
 import requests
 import websocket
 
-
 from .._constructors import _generate_user_data
 
 class Fakemailgenerator_com():
     """An API Wrapper around the https://www.fakemailgenerator.com/ website"""
+
+    _BASE_URL = "https://www.fakemailgenerator.com"
 
     def __init__(self, name: str=None, domain:str=None, exclude: list[str]=None):
         """
@@ -23,13 +25,13 @@ class Fakemailgenerator_com():
         
         self.name, self.domain, self.email, self.valid_domains = _generate_user_data(name, domain, exclude, self.get_valid_domains())
 
-    @staticmethod
-    def get_valid_domains() -> list[str]:
+    @classmethod
+    def get_valid_domains(cls) -> list[str]:
         """
         Returns a list of valid domains of the service (format: abc.xyz) as a list
         """
 
-        r = requests.get("https://www.fakemailgenerator.com/")
+        r = requests.get(cls._BASE_URL)
         if r.ok:
             soup = BeautifulSoup(r.text, "lxml")
             emails = soup.find("ul", {"class": "dropdown-menu"})
@@ -44,7 +46,7 @@ class Fakemailgenerator_com():
         mail_id - the id of the mail you want the content of
         """
 
-        r = self._session.get(f"https://www.fakemailgenerator.com/email/{self.domain}/{self.name}/message-{mail_id}/")
+        r = self._session.get(f"{self._BASE_URL}/email/{self.domain}/{self.name}/message-{mail_id}/")
         if r.ok:
             return r.text
 
@@ -54,7 +56,7 @@ class Fakemailgenerator_com():
         Returns the inbox of the email as a list with mails as dicts list[dict, dict, ...]
         """
 
-        r = self._session.get(f"https://www.fakemailgenerator.com/inbox/{self.domain}/{self.name}/")
+        r = self._session.get(f"{self._BASE_URL}/inbox/{self.domain}/{self.name}/")
         if r.ok:
             soup = BeautifulSoup(r.text, "lxml")
             email_list = soup.find("ul", {"id": "email-list"})
@@ -73,12 +75,13 @@ class Fakemailgenerator_com():
 
             return emails
 
-    def wait_for_new_email(self, delay: None=None, timeout: int=60) -> dict:
+    def wait_for_new_email(self, delay: None=None, timeout: int=60, is_ready_event: threading.Event=None) -> dict:
         """
         Waits for a new mail (using websockets), returns the data of the incoming email, None if timeout is hit or an error occurs\n
         Args:\n
         timeout - the time which is allowed to pass before forcefully stopping, <=0 -> no timeout. Note that it does not stop at exactly the time due to being sync
         delay - not used, simply for compatability
+        is_ready_event - used for indicating that the function is ready to receive emails
         """
 
         if timeout > 0: 
@@ -97,6 +100,7 @@ class Fakemailgenerator_com():
             if message == "3probe":
                 ws.send("5")
                 ws.send(f'42["watch_address", "{self.email}"]')
+                if is_ready_event: is_ready_event.set()
 
             elif message.startswith("42"):
                 data = json.loads(message[2:])

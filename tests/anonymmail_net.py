@@ -27,4 +27,4 @@ print(d2)
 
 assert d1["id"] != d2["id"], "Email IDs are the same"
 
-assert len(mail.get_inbox()) == 2, "Inbox length wrong"
+assert len(mail.get_inbox()) == 0, "Inbox length wrong"

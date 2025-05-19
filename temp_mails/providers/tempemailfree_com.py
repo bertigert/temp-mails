@@ -3,7 +3,7 @@ import json
 from bs4 import BeautifulSoup
 import requests
 
-from .._constructors import _Livewire
+from .._constructors import _Livewire, GLOBAL_UA
 
 class Tempemailfree_com(_Livewire):
     """An API Wrapper around the https://luxusmail.org website"""
@@ -31,7 +31,7 @@ class Tempemailfree_com(_Livewire):
         """
             Returns a list of a valid domains, None if failure
         """
-        r = requests.get("https://tempemailfree.com/", headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"})
+        r = requests.get("https://tempemailfree.com/", headers={"User-Agent": GLOBAL_UA})
 
         if r.ok:
             soup = BeautifulSoup(r.text, "lxml")

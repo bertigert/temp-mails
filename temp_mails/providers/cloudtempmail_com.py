@@ -1,6 +1,6 @@
-from .._constructors import _Tmailor_Tmail_Cloudtempmail
+from .._constructors import _Tmail_Cloudtempmail
 
-class Cloudtempmail_com(_Tmailor_Tmail_Cloudtempmail):
+class Cloudtempmail_com(_Tmail_Cloudtempmail):
     """
     An API Wrapper around the https://cloudtempmail.com/ website
     https://tmail.ai/, https://cloudtempmail.com/ all use the same domains (and maybe servers)

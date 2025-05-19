@@ -25,4 +25,4 @@ class Tempm_com(_Generatoremail_etc):
         r = requests.get("https://tempm.com/")
         if r.ok:
             soup = BeautifulSoup(r.text, "lxml")
-            return [domain.text for domain in soup.find_all("div", {"class": "e7m tt-suggestion"})]
+            return [domain.text for domain in soup.find_all("div", {"class": "tt-suggestion"})]

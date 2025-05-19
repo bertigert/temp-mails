@@ -3,10 +3,12 @@ from time import sleep, time
 from bs4 import BeautifulSoup
 import requests
 
-from .._constructors import _generate_user_data
+from .._constructors import _generate_user_data, GLOBAL_UA, SSLAdapterCF
 
 class Muellmail_com():
     """An API Wrapper around the https://muellmail.com/ website"""
+
+    _BASE_URL = "https://muellmail.com"
 
     def __init__(self, name: str=None, domain:str=None, exclude: list[str]=None):
         """
@@ -18,11 +20,16 @@ class Muellmail_com():
         """
 
         self._session = requests.Session()
-        r = self._session.get("https://muellmail.com/api/auth/session")
+        self._session.headers = {
+            "User-Agent": GLOBAL_UA
+        }
+        self._session.mount("https://", SSLAdapterCF)
+        
+        r = self._session.get(self._BASE_URL+"/api/f-auth/session")
         if not r.ok:
-            raise Exception("Failed to create email, status:", r.status_code)
+            raise Exception("Failed to create email, status:", r.status_code, r.text)
 
-        r = self._session.get("https://muellmail.com/api/auth/csrf")
+        r = self._session.get(self._BASE_URL+"/api/f-auth/csrf")
         if not r.ok:
             raise Exception("Failed to create email, status:", r.status_code)
         
@@ -30,27 +37,32 @@ class Muellmail_com():
         
         self.name, self.domain, self.email, self.valid_domains = _generate_user_data(name, domain, exclude, self.get_valid_domains())
         
-        r = self._session.post("https://muellmail.com/api/auth/callback/anon?", data={
+        r = self._session.post(self._BASE_URL+"/api/f-auth/callback/anon?", data={
             "redirect": "false",
             "muellmail": self.email,
             "csrfToken": self._token,
-            "callbackUrl": "https://muellmail.com/#/"+self.email,
+            "callbackUrl": self._BASE_URL+"/#/"+self.email,
             "json": "true"
         })
 
         if not r.ok:
             raise Exception("Failed to create email, status:", r.status_code)
 
-        r = self._session.get("https://muellmail.com/api/auth/session")
+        r = self._session.get(self._BASE_URL+"/api/auth/session")
 
 
-    @staticmethod
-    def get_valid_domains() -> list[str]:
+    @classmethod
+    def get_valid_domains(cls) -> list[str]:
         """
         Returns a list of valid domains of the service (format: abc.xyz) as a list
         """
 
-        r = requests.get("https://muellmail.com/")
+        s = requests.Session()
+        s.headers = {
+            "User-Agent": GLOBAL_UA
+        }
+        s.mount("https://", SSLAdapterCF)
+        r = s.get(cls._BASE_URL)
         
         if r.ok:
             soup = BeautifulSoup(r.text, "lxml")
@@ -63,7 +75,7 @@ class Muellmail_com():
         Returns the inbox of the email as a list with mails as dicts list[dict, dict, ...]
         """
 
-        r = self._session.post("https://muellmail.com/graphql", json={
+        r = self._session.post(self._BASE_URL+"/graphql", json={
             "operationName": "MailQuery",
             "variables": {
                 "offset": 0,
@@ -86,7 +98,7 @@ class Muellmail_com():
         if timeout > 0: 
             start = time()
         
-        r = self._session.post("https://muellmail.com/graphql", json={
+        r = self._session.post(self._BASE_URL+"/graphql", json={
             "operationName": "Query",
             "variables": {},
             "query": "query Query {\n  emailsCount\n}"
@@ -101,7 +113,7 @@ class Muellmail_com():
             if timeout > 0 and time()-start >= timeout:
                 return None
             
-            r = self._session.post("https://muellmail.com/graphql", json={
+            r = self._session.post(self._BASE_URL+"/graphql", json={
                 "operationName": "Query",
                 "variables": {},
                 "query": "query Query {\n  emailsCount\n}"

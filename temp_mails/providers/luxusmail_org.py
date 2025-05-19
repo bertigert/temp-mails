@@ -1,12 +1,9 @@
-import json
-
-from bs4 import BeautifulSoup
-import requests
-
 from .._constructors import _Livewire
 
 class Luxusmail_org(_Livewire):
     """An API Wrapper around the https://luxusmail.org website"""
+
+    _BASE_URL = "https://luxusmail.org/"
 
     def __init__(self, name: str=None, domain: str=None, exclude: list[str]=None):
         """
@@ -19,22 +16,13 @@ class Luxusmail_org(_Livewire):
         
         super().__init__(
             urls={
-                "base": "https://luxusmail.org/",
-                "app": "https://luxusmail.org/livewire/message/frontend.app",
-                "actions": "https://luxusmail.org/livewire/message/frontend.actions"
+                "base": self._BASE_URL,
+                "app": self._BASE_URL+"/livewire/message/frontend.app",
+                "actions": self._BASE_URL+"/livewire/message/frontend.actions"
             },
             order=0, name=name, domain=domain, exclude=exclude
         )
 
-    @staticmethod
-    def get_valid_domains() -> list[str] | None:
-        """
-            Returns a list of a valid domains, None if failure
-        """
-        r = requests.get("https://luxusmail.org/")
-       
-        if r.ok:
-            soup = BeautifulSoup(r.text, "lxml")
-            data = json.loads(soup.find(lambda tag: tag.name == "div" and "in_app: false" in tag.get("x-data", "") and ( "wire:initial-data" in tag.attrs ))["wire:initial-data"])
-
-            return data["serverMemo"]["data"]["domains"]
+    @classmethod
+    def get_valid_domains(cls) -> list[str]:
+        return cls.__bases__[0].get_valid_domains(cls._BASE_URL)

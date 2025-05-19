@@ -1,9 +1,15 @@
+# Build
 __pycache__
 dist
+
+# Helper
 *test.*
 *.bat
 publish.py
+
+# Other
 commit
 trashed
 send_email.py
 temp.*
+results*.md

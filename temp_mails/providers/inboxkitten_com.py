@@ -5,6 +5,8 @@ from .._constructors import _WaitForMail, _generate_user_data
 class Inboxkitten_com(_WaitForMail):
     """An API Wrapper around the https://inboxkitten.com/ website"""
 
+    _BASE_URL = "https://inboxkitten.com"
+
     def __init__(self, name: str=None, domain:str=None, exclude: list[str]=None):
         """
         Generate an inbox\n
@@ -35,7 +37,7 @@ class Inboxkitten_com(_WaitForMail):
         """
 
         region, mail_id = mail_id.split(",", 1)
-        r = self._session.get(f"https://inboxkitten.com/api/v1/mail/getHtml?region={region}&key={mail_id}")
+        r = self._session.get(f"{self._BASE_URL}/api/v1/mail/getHtml?region={region}&key={mail_id}")
         if r.ok:
             return r.text.rsplit("<script>", 1)[0]
 
@@ -45,7 +47,7 @@ class Inboxkitten_com(_WaitForMail):
         Returns the inbox of the email as a list with mails as dicts list[dict, dict, ...]
         """
 
-        r = self._session.get("https://inboxkitten.com/api/v1/mail/list?recipient="+self.name)
+        r = self._session.get(f"{self._BASE_URL}/api/v1/mail/list?recipient={self.name}")
         if r.ok:
             return [{
                 "id": f"{email['storage']['region']},{email['storage']['key']}",

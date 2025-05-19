@@ -1,7 +1,7 @@
 from random import choices, choice
 from string import ascii_lowercase
 
-from temp_mails import Luxusmail_org as Mail
+from temp_mails import Tempemail_info as Mail
 from send_email import send_email_sync
 
 name, domain = "".join(choices(ascii_lowercase, k=6)), choice(Mail.get_valid_domains())

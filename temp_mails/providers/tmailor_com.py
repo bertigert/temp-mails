@@ -3,6 +3,8 @@ from time import time
 import requests
 import websocket
 
+from .._constructors import GLOBAL_UA
+
 class Tmailor_com():
     """
     An API Wrapper around the https://tmailor.com/ website.
@@ -18,10 +20,10 @@ class Tmailor_com():
                 "accept-encoding": "gzip, deflate, br, zstd",
                 "accept-language": "en-US,en;q=0.9,de-DE;q=0.8,de;q=0.7",
                 "origin": "https://tmailor.com",
-                "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"
+                "user-agent": GLOBAL_UA
             }
 
-            self._link = "https://s772024-graph.s3k.net"
+            self._link = "https://tmailor.com"
             
             r = self._session.post(self._link+"/api/", json={
                 "action": "newemail",
@@ -109,11 +111,11 @@ class Tmailor_com():
         
         if r.ok and (d := r.json())["msg"] == "ok":
             return [{
-                "id": ( d["data"][email]["id"], d["data"][email]["email_id"] ),
-                "time": d["data"][email]["receive_time"],
-                "from": d["data"][email]["sender_email"],
-                "subject": d["data"][email]["subject"]
-            } for email in d["data"].keys()] if d["data"] else []
+                "id": ( email["id"], email["email_id"] ),
+                "time": email["receive_time"],
+                "from": email["sender_email"],
+                "subject": email["subject"]
+            } for email in d["data"].values()] if d["data"] else []
         
 
     def wait_for_new_email(self, delay: None=None, timeout: int=60) -> dict:

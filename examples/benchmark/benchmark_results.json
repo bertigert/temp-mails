@@ -2,12 +2,12 @@
     "Dropmail_me": {
         "laste.ml": 1.882586419582367,
         "dropmail.me": 1.438673973083496,
-        "emlpro.com": 1.498605489730835,
+        "emlpro.com": 1.3229985237121582,
         "spymail.one": 1.4056047201156616,
         "10mail.org": 1.4022722244262695,
         "10mail.xyz": 1.459912657737732,
         "yomail.info": 1.7720160484313965,
-        "emltmp.com": 1.5003559589385986,
+        "emltmp.com": 1.3373926281929016,
         "emlhub.com": 1.7989252805709839,
         "minimail.gq": 2.0271480083465576,
         "freeml.net": 1.4665930271148682,
@@ -16,7 +16,8 @@
     "Tempmail_ninja": {
         "bozev.com": 90.0,
         "euriv.com": 46.307631611824036,
-        "juaxe.com": 3.9178550243377686
+        "juaxe.com": 3.9178550243377686,
+        "gukox.org": 36.31637966632843
     },
     "Tempmail_org": {
         "agaseo.com": 2.227586507797241,
@@ -26,13 +27,19 @@
         "rartg.com": 3.1943113803863525,
         "eqvox.com": 3.138047456741333,
         "exeneli.com": 3.337397575378418,
-        "egela.com": 3.2103278636932373
+        "egela.com": 3.2103278636932373,
+        "jomspar.com": 3.0493085384368896,
+        "neuraxo.com": 2.91485333442688,
+        "hazhab.com": 2.890469789505005,
+        "jazipo.com": 3.0421342849731445
     },
     "Mail_tm": {
         "awgarstone.com": 35.94005513563752,
         "fthcapital.com": 1.7708861827850342,
         "navalcadets.com": 1.906469702720642,
-        "rowdydow.com": 1.6177144050598145
+        "rowdydow.com": 1.6177144050598145,
+        "edny.net": 70,
+        "dcpa.net": 1.6000434160232544
     },
     "Mohamal_com": {
         "mailna.co": 3.026512950658798,
@@ -43,16 +50,18 @@
         "mohmal.im": 2.9639089107513428
     },
     "Tempmail_lol": {
-        "zelda.quest": 11.562891057226807,
+        "zelda.quest": 40.7814455286134,
         "ulwu.hockeycrash.info": 3.194035768508911,
         "6jyl.4evrmail.shop": 3.2093300819396973,
         "a4qf.cse445.com": 70,
-        "qb3z.terriblecoffee.org": 3.0478482246398926
+        "qb3z.terriblecoffee.org": 3.0478482246398926,
+        "jailbreakeverything.com": 2.7480997443199158
     },
     "Disposablemail_com": {
         "dockerbike.com": 4.649048402905464,
         "dockleafs.com": 3.2586812376976013,
-        "dockstones.com": 2.8360910415649414
+        "dockstones.com": 2.8360910415649414,
+        "deliverydaily.org": 3.492988109588623
     },
     "Adguard_com": {
         "mailcurity.com": 3.4916301034390926,
@@ -66,10 +75,13 @@
         "zlorkun.com": 3.008665442466736,
         "gonetor.com": 3.06913685798645,
         "vvatxiy.com": 2.986135482788086,
-        "tidissajiiu.com": 2.9777534008026123,
+        "tidissajiiu.com": 3.1145094633102417,
         "rentforsale7.com": 2.929076910018921,
         "rfcdrive.com": 2.9037859439849854,
-        "dygovil.com": 2.637958288192749
+        "dygovil.com": 2.637958288192749,
+        "jxpomup.com": 2.6416547298431396,
+        "xkxkud.com": 2.6416196823120117,
+        "qejjyl.com": 2.6957736015319824
     },
     "Dismailbox_com": {
         "zod.edu.pl": 3.2979770079255104,
@@ -86,16 +98,17 @@
         "4nrs.cse445.com": 2.032125234603882
     },
     "Tempmail_plus": {
-        "rover.info": 3.3196914196014404,
-        "fexpost.com": 3.24114990234375,
+        "rover.info": 3.0199029445648193,
+        "fexpost.com": 2.960721254348755,
         "merepost.com": 3.322994589805603,
         "fextemp.com": 36.28775465488434,
-        "any.pink": 3.259081721305847,
+        "any.pink": 2.9816372990608215,
         "chitthi.in": 3.323117733001709,
-        "fexbox.org": 4.255882263183594
+        "fexbox.org": 3.4875504970550537
     },
     "Tempinbox_com": {
-        "enhancedzoom.com": 61.70153796626255
+        "enhancedzoom.com": 61.70153796626255,
+        "victoriaalison.com": 5.777453780174255
     },
     "Tenminemail_com": {
         "rartg.com": 3.2788267135620117,
@@ -104,7 +117,11 @@
         "etopys.com": 2.505135416984558,
         "fna6.com": 3.1788763999938965,
         "dalebig.com": 3.216712713241577,
-        "lisoren.com": 3.243495464324951
+        "lisoren.com": 3.243495464324951,
+        "calmpros.com": 3.0679447650909424,
+        "inkight.com": 2.905923843383789,
+        "magpit.com": 2.9990077018737793,
+        "daupload.com": 2.937859296798706
     },
     "Cryptogmail_com": {
         "labworld.org": 19.112504470162094,
@@ -122,15 +139,17 @@
     "Minuteinbox_com": {
         "milkgitter.com": 3.685902386903763,
         "moongit.com": 3.2669584825634956,
-        "moonversion.com": 2.8827104568481445
+        "moonversion.com": 2.8827104568481445,
+        "magneticoak.com": 3.0604617595672607
     },
     "Fakemail_net": {
         "foodfarms.net": 3.4954771921038628,
         "floodouts.com": 19.962929762899876,
-        "frontbridges.com": 5.636793851852417
+        "frontbridges.com": 5.636793851852417,
+        "fabricoak.com": 2.951380968093872
     },
     "Tempail_com": {
-        "gufum.com": 7.931339837727137
+        "gufum.com": 5.600912159781728
     },
     "Tempmail_email": {
         "gotgel.org": 28.42842674255371,
@@ -151,22 +170,25 @@
         "koes.justdied.com": 3.107119560241699,
         "888.dnS-clouD.NET": 3.1471495628356934,
         "ymail.v6.navy": 70,
-        "CR.cloudns.asia": 2.682934522628784
+        "CR.cloudns.asia": 2.7558850049972534,
+        "0815.ru": 2.7940316200256348
     },
     "Moakt_com": {
         "teml.net": 3.610254168510437,
         "tmpbox.net": 3.4164538383483887,
         "bareed.ws": 3.7038527131080627,
-        "disbox.org": 3.2467808723449707,
+        "disbox.org": 3.1959701776504517,
         "moakt.co": 1.2591469287872314,
         "moakt.ws": 3.518437385559082,
         "tmail.ws": 3.439338207244873,
         "moakt.cc": 3.9107937812805176,
-        "tmpmail.org": 3.5555264949798584
+        "tmpmail.org": 3.362596273422241,
+        "tmpmail.net": 3.13861083984375
     },
     "Tenminutesemail_net": {
         "ipahive.org": 4.533559240400791,
-        "uf.edu.pl": 4.577346134930849
+        "uf.edu.pl": 5.628356957808137,
+        "ufc.edu.pl": 62.27239406108856
     },
     "Etempmail_net": {
         "funkoo.xyz": 3.7442809343338013,
@@ -196,11 +218,14 @@
         "dsgvo.party": 70,
         "papierkorb.me": 3.8874099254608154,
         "mdz.email": 3.4147982597351074,
-        "holio.day": 6.898284912109375
+        "holio.day": 6.898284912109375,
+        "wegwerfemail.de": 70
     },
     "Etempmail_com": {
         "promail.edu.pl": 5.208295918768272,
-        "fast.edu.pl": 4.519228279590607
+        "fast.edu.pl": 4.519228279590607,
+        "ozel.edu.pl": 70,
+        "ozkadem.edu.pl": 46.75298744440079
     },
     "Tmail_ai": {
         "likemovie.net": 7.680505871772766,
@@ -216,15 +241,17 @@
         "bookgame.org": 7.174053430557251,
         "1sworld.com": 13.22807765007019,
         "aluimport.com": 11.250244557857513,
-        "s3k.net": 14.050679922103882
+        "s3k.net": 14.050679922103882,
+        "leechchannel.com": 1.870830774307251
     },
     "Tempmail_id": {
-        "xinn.edu.pl": 31.811862260103226,
+        "xinn.edu.pl": 50.90593113005161,
         "mlbb.edu.pl": 49.251421093940735,
         "curuth.com": 90,
-        "bacot.in": 80.0,
+        "bacot.in": 75.0,
         "steve.edu.pl": 49.756277203559875,
-        "ziinx.com.mx": 70
+        "ziinx.com.mx": 70,
+        "gentle.web.id": 42.69703531265259
     },
     "Upxmail_com": {
         "biolean-reviews.shop": 54.83749631233513,
@@ -249,7 +276,7 @@
         "nickmxh.com": 19.263548851013184
     },
     "Tempdashmail_gg": {
-        "fibmail.com": 9.84141544252634,
+        "fibmail.com": 7.666550058871508,
         "gensmail.com": 11.257009387016296,
         "gimbmail.com": 11.79127275198698
     },
@@ -258,31 +285,34 @@
         "montenegroes.club": 13.080312818288803
     },
     "Tempmail_net": {
-        "tozya.com": 15.494107406586409
+        "tozya.com": 66.59338171291165
     },
     "Tmail_gg": {
         "tmail2.org": 14.300965547561646,
-        "tmail5.org": 14.899292826652527,
+        "tmail5.org": 17.98199087381363,
         "tmail4.org": 13.180102437734604,
-        "tmail1.org": 75.0,
-        "tmail3.org": 27.35948348045349
+        "tmail1.org": 71.25,
+        "tmail3.org": 18.531506299972534
     },
     "Tmmail_com": {
         "mpztech.online": 16.52140846848488,
         "seamantech.life": 20.138161301612854,
-        "dmsmartz.us": 16.438637495040894
+        "dmsmartz.us": 16.459245562553406,
+        "lqxheir.website": 15.962061405181885,
+        "techeback.online": 16.34250259399414
     },
     "Guerillamail_com": {
         "guerrillamail.biz": 15.231556177139282,
         "guerrillamail.net": 12.257483720779419,
         "sharklasers.com": 9.9235280752182,
-        "grr.la": 22.016118049621582,
+        "grr.la": 16.45322322845459,
         "guerrillamail.com": 13.135862827301025,
-        "spam4.me": 11.954829216003418,
-        "pokemail.net": 18.655059576034546,
+        "spam4.me": 11.52035677433014,
+        "pokemail.net": 13.776963353157043,
         "guerrillamail.org": 11.03455901145935,
         "guerrillamail.info": 14.007000207901001,
-        "guerrillamail.de": 16.253051042556763
+        "guerrillamail.de": 16.253051042556763,
+        "guerrillamailblock.com": 10.822160482406616
     },
     "Tempemailfree_com": {
         "everymails.shop": 35.597140073776245,
@@ -292,13 +322,16 @@
         "excellinix.com": 21.609822988510132,
         "emails2u.shop": 29.638816714286804,
         "evrymails.shop": 26.103785276412964,
-        "evrymail.shop": 43.86962294578552
+        "evrymail.shop": 43.86962294578552,
+        "edupolska.edu.pl": 10.43677043914795,
+        "smartemailbox.co": 10.1945161819458,
+        "mailisia.com": 12.389878511428833
     },
     "Mailgolem_com": {
-        "mailgolem.com": 69.29270042222925
+        "mailgolem.com": 69.95579377638933
     },
     "Mailhole_de": {
-        "mailhole.de": 8.804598426067969
+        "mailhole.de": 62.13286927933768
     },
     "Gmailcity_com": {
         "thesms.in": 44.444682121276855,
@@ -313,15 +346,20 @@
         "yzistanbul.fun": 44.68164402246475,
         "getemails.online": 44.700945138931274,
         "yzistanbul.me": 44.24048852920532,
-        "veryberrymail.com": 47.239232540130615
+        "veryberrymail.com": 47.239232540130615,
+        "emailband.com": 45.755351305007935,
+        "zipmails.online": 45.23181962966919,
+        "welovetemp.online": 70,
+        "euroemailbox.com": 45.55716609954834
     },
     "Fakemailgenerator_com": {
         "rhyta.com": 61.474323749542236,
-        "armyspy.com": 61.174232095479965,
+        "armyspy.com": 68.896779011935,
         "gustr.com": 61.33300709724426,
         "jourrapide.com": 61.544882357120514,
         "cuvox.de": 61.083781242370605,
-        "dayrep.com": 61.15663278102875
+        "dayrep.com": 61.15663278102875,
+        "teleworm.us": 70
     },
     "Crazymailing_com": {
         "endob.com": 53.215341210365295,
@@ -333,26 +371,30 @@
         "eqntfrue.com": 45.88553834334016,
         "approich.com": 19.353506356477737,
         "nmemacara.com": 2.544600009918213,
-        "orymane.com": 4.049612522125244
+        "orymane.com": 4.049612522125244,
+        "idvinced.com": 1.603362798690796,
+        "noisyence.com": 4.114030957221985
     },
     "Fakermail_com": {
-        "whaaaaaaaaaat.com": 75.0,
+        "whaaaaaaaaaat.com": 72.5,
         "thespamfather.com": 90,
         "hypenated-domain.com": 90,
         "spamfellas.com": 80.0,
         "pizzajunk.com": 70,
         "itsjiff.com": 70.0,
         "realquickemail.com": 70,
-        "sharkfaces.com": 70
+        "sharkfaces.com": 70,
+        "lilspam.com": 70
     },
     "Byom_de": {
-        "byom.de": 31.764793157577515
+        "byom.de": 16.387739583849907
     },
     "Correotemporal_org": {
         "buvxa.com": 47.97844064235687,
         "nipef.com": 90,
         "euriv.com": 90,
-        "bxuca.org": 2.407545804977417
+        "bxuca.org": 2.407545804977417,
+        "gukox.org": 36.31834036111832
     },
     "Generator_email": {
         "properevod.ru": 90,
@@ -368,7 +410,11 @@
         "alphabeticalsa.online": 2.4510631561279297,
         "gottigetbalanced.com": 2.370995283126831,
         "yt-google.com": 2.194617509841919,
-        "dealyaari.com": 2.5237278938293457
+        "dealyaari.com": 2.5237278938293457,
+        "patance.com": 2.641113758087158,
+        "tamsholdings.com": 2.673865795135498,
+        "disipulo.com": 2.6686136722564697,
+        "sozenit.com": 2.486088275909424
     },
     "Mailtemp_com": {
         "morrisonave.es": 90,
@@ -383,10 +429,14 @@
         "anadaratours.com": 2.6041951179504395,
         "cggup.com": 2.5323238372802734,
         "6speedsnail.com": 2.6122915744781494,
-        "casanovalar.com": 2.196244955062866
+        "casanovalar.com": 2.196244955062866,
+        "murahpanel.com": 2.5331878662109375,
+        "jieluv.com": 2.3221664428710938,
+        "dmxs8.com": 2.1948487758636475,
+        "dishow.net": 2.827733278274536
     },
     "Mostakbile_com": {
-        "mostakbile.com": 46.456761826295406
+        "mostakbile.com": 47.53630977735156
     },
     "Tempmailso_com": {
         "seotoolsay.com": 17.568957567214966
@@ -397,7 +447,9 @@
     },
     "Zemail_me": {
         "justfly.site": 59.75,
-        "gmail.com": 10
+        "gmail.com": 10,
+        "glossycandy.shop": 19.38766312599182,
+        "e-pool.co.uk": 70
     },
     "Tempmails_net": {
         "techimails.com": 90,
@@ -413,17 +465,19 @@
     },
     "Tempmail_gg": {
         "uaques.com": 75.0,
-        "crypape.com": 90.0
+        "crypape.com": 90.0,
+        "tempmail.gg": 70.0
     },
     "Trashmail_com": {
         "you-spam.com": 75.0,
         "re-gister.com": 46.15685534477234,
         "trash-mail.com": 52.43470621109009,
         "trash-me.com": 75.0,
-        "opentrash.com": 70.0
+        "opentrash.com": 70.0,
+        "fake-box.com": 70
     },
     "Wptempmail_com": {
-        "iblogger.top": 69.9320106045343
+        "iblogger.top": 69.98300265113357
     },
     "Tenminuteemail_com": {
         "ckptr.com": 46.75107741355896,
@@ -431,22 +485,28 @@
         "cazlq.com": 1.3445314168930054,
         "cazlv.com": 3.338806629180908,
         "cwmxc.com": 2.0654473304748535,
-        "cazlg.com": 3.449167251586914
+        "cazlg.com": 3.449167251586914,
+        "nbmbb.com": 3.212301254272461,
+        "fxavaj.com": 3.123674154281616,
+        "xfavaj.com": 3.513489007949829,
+        "nesopf.com": 3.5471031665802
     },
     "Inboxes_com": {
         "spicysoda.com": 80.0,
-        "getnada.com": 80.0,
+        "getnada.com": 75.0,
         "robot-mail.com": 90,
         "tafmail.com": 80.0,
-        "vomoto.com": 70,
+        "vomoto.com": 70.0,
         "gimpmail.com": 70,
         "replyloop.com": 70,
         "getmule.com": 70,
         "inboxbear.com": 70,
-        "temptami.com": 70
+        "temptami.com": 70,
+        "clowmail.com": 70,
+        "dropjar.com": 70
     },
     "Mailinator_com": {
-        "mailinator.com": 1.9981599636375904
+        "mailinator.com": 1.1628893066663295
     },
     "Mailseven_io": {
         "mail7.io": 1.551810909062624
@@ -455,10 +515,12 @@
         "miteon.com": 1.6866679191589355,
         "muatoc.com": 1.7707808017730713,
         "mynanaimohomes.com": 3.339977979660034,
-        "nespressopixie.com": 2.0435181856155396
+        "nespressopixie.com": 2.0435181856155396,
+        "pastryofistanbul.com": 35.72248637676239,
+        "raleigh-construction.com": 15.525634050369263
     },
     "Mailsac_com": {
-        "mailsac.com": 34.60384155809879
+        "mailsac.com": 16.460423872806132
     },
     "Tempm_com": {
         "otpku.com": 2.2931270599365234,
@@ -467,7 +529,11 @@
         "alongsa.shop": 2.4271328449249268,
         "scottsappliancerepairredding.com": 2.9968185424804688,
         "domaaain15.online": 2.305210590362549,
-        "24hinbox.com": 2.180776357650757
+        "24hinbox.com": 2.180776357650757,
+        "googl.win": 2.5902535915374756,
+        "quatetaline.com": 2.6093039512634277,
+        "cuongaquarium.com": 3.987774610519409,
+        "mytempmail.org": 2.275963306427002
     },
     "Emailfake_com": {
         "24hinbox.com": 2.650790214538574,
@@ -476,10 +542,14 @@
         "54.mk": 2.7458252906799316,
         "mailvoxa.com": 2.5680363178253174,
         "smalltallkcounseling.com": 2.398275852203369,
-        "ebarg.net": 2.363225221633911
+        "ebarg.net": 2.363225221633911,
+        "napmails.online": 2.870401382446289,
+        "lechatiao.com": 3.2067058086395264,
+        "duniakeliling.com": 2.5683958530426025,
+        "cumfoto.com": 2.274580717086792
     },
     "Mailper_com": {
-        "mailper.com": 1.159731186926365
+        "mailper.com": 1.1637300574220717
     },
     "Emaildashfake_com": {
         "grafdot.com": 2.8120150566101074,
@@ -488,27 +558,35 @@
         "bitmonkey.xyz": 2.9626049995422363,
         "yotomail.com": 2.5611438751220703,
         "code-gmail.com": 2.6642963886260986,
-        "binhvt.com": 2.515871047973633
+        "binhvt.com": 2.515871047973633,
+        "kimgmail.com": 2.416264533996582,
+        "naverly.com": 2.4124226570129395,
+        "kabarr.com": 2.7465834617614746,
+        "getimell.com": 3.5560104846954346
     },
     "Haribu_net": {
-        "yevme.com": 6.3355006873607635
+        "yevme.com": 66.02096879296005
     },
     "Mailcatch_com": {
-        "mailcatch.com": 61.65262891724706
+        "mailcatch.com": 67.91315722931176
     },
     "Anonymmail_net": {
         "usatron.net": 3.011432409286499,
         "mailmoi.net": 3.5382591485977173,
-        "emailrod.com": 2.686156749725342
+        "emailrod.com": 2.9196139574050903,
+        "gassmail.com": 3.1516377925872803,
+        "emailnow.net": 70
     },
     "Tenminutemail_one": {
-        "cobmk.com": 3.0791353173553944
+        "cobmk.com": 3.0791353173553944,
+        "translateid.com": 1.0452966690063477
     },
     "Incognitomail_co": {
-        "mailfast.pro": 3.5155153423547745
+        "mailfast.pro": 3.5155153423547745,
+        "mailpro.live": 3.177474021911621
     },
     "Burnermailbox_com": {
-        "kihasl.com": 3.3191024512052536
+        "kihasl.com": 18.667115326039493
     },
     "Expressinboxhub_com": {
         "zenzap.shop": 4.361410856246948,
@@ -526,42 +604,46 @@
         "fbinsta.store": 30.55870747566223
     },
     "Inboxkitten_com": {
-        "inboxkitten.com": 6.573143266141415
+        "inboxkitten.com": 61.98581868549809
     },
     "Mailfourqa_com": {
-        "mail4qa.com": 3.8397183157503605
+        "mail4qa.com": 61.7615176870022
     },
     "Emailtenmin_com": {
-        "xeduh.com": 6.465013787150383
+        "xeduh.com": 6.465013787150383,
+        "doobb.com": 70.0
     },
     "Mailtemp_net": {
-        "ottvv.com": 5.585829000920057
+        "ottvv.com": 5.585829000920057,
+        "moddv.com": 70.0
     },
     "Maildax_com": {
-        "maildax.me": 3.3302735835313797
+        "maildax.me": 5.763009775429964
     },
     "Tempinbox_me": {
-        "temp-inbox.me": 42.34171799942851
+        "temp-inbox.me": 56.170858999714255
     },
     "Tmail_io": {
-        "tmail.io": 5.229981064796448,
-        "yahoomail.pro": 7.147466361522675,
-        "imail.edu.pl": 5.137180805206299
+        "tmail.io": 4.260739028453827,
+        "yahoomail.pro": 5.8351220935583115,
+        "imail.edu.pl": 4.1584635972976685
     },
     "Rainmail_xyz": {
         "despairsquid.xyz": 5.980952978134155,
         "epideme.xyz": 5.885134935379028,
         "muttonvindaloobeast.xyz": 70.0,
-        "polymorph.icu": 70
+        "polymorph.icu": 70,
+        "emohawk.xyz": 6.584418416023254
     },
     "Mailforspam_com": {
-        "mailforspam.com": 6.157322276383638
+        "mailforspam.com": 6.2747404493857175
     },
     "Trashmail_de": {
-        "trashmail.de": 11.643042482435703
+        "trashmail.de": 11.643042482435703,
+        "mailaddress.de": 11.811564922332764
     },
     "Lroid_com": {
-        "yevme.com": 8.187692105770111
+        "yevme.com": 66.13673075661063
     },
     "Tenminutemail_net": {
         "kkokc.com": 6.2848217487335205,
@@ -575,12 +657,12 @@
         "knowzatech.com": 8.42058253288269
     },
     "Txen_de": {
-        "aufu.de": 9.972732305526733,
+        "aufu.de": 8.387350797653198,
         "errals.com": 10.567801594734192,
         "niede.de": 4.3203160762786865,
         "zegt.de": 11.843870401382446,
         "xrap.de": 4.281453371047974,
-        "skyrt.de": 4.059159517288208
+        "skyrt.de": 7.658965229988098
     },
     "Treemail_pro": {
         "speeder.live": 11.112415075302124,
@@ -593,10 +675,12 @@
     },
     "Priyo_email": {
         "priyo.email": 17.74832274019718,
-        "priyomail.nl": 6.174361944198608
+        "priyomail.nl": 6.174361944198608,
+        "priyo.ovh": 70
     },
     "Tempmailbox_net": {
-        "temp-mailbox.net": 43.35773413255811
+        "temp-mailbox.net": 43.35773413255811,
+        "allreview4u.com": 70
     },
     "Fmail_sbs": {
         "free-temp.eu.org": 17.522769689559937,
@@ -606,7 +690,7 @@
     },
     "Tempomail_top": {
         "k3l12.online": 23.464927911758423,
-        "player41.autos": 9.671135991811752,
+        "player41.autos": 10.410075491294265,
         "poesto.christmas": 8.909737825393677
     },
     "Tempmailinbox_com": {
@@ -615,7 +699,10 @@
     "Tempinbox_xyz": {
         "tempinbox.xyz": 45.158994257450104,
         "avkwinkel.nl": 48.20355701446533,
-        "tpbay.site": 48.31600904464722
+        "tpbay.site": 59.15800452232361,
+        "rocksmail.cfd": 47.603275299072266,
+        "thepiratebay.cloud": 47.377299785614014,
+        "glowend.xyz": 47.3744912147522
     },
     "Temils_com": {
         "temils.com": 44.925933957099915
@@ -630,22 +717,23 @@
         "tempemailgen.com": 48.42776383459568
     },
     "Tmpmail_co": {
-        "tmpmail.co": 48.41069772094488
+        "tmpmail.co": 59.20534886047244
     },
     "Segamail_com": {
-        "segamail.com": 51.676532335579395
+        "segamail.com": 50.3318808414042
     },
     "Disposableemail_co": {
         "malinatorgen.com": 50.444764256477356,
         "backilnge.com": 59.29833495616913,
         "webomoil.com": 70,
-        "livemalins.net": 43.561986446380615
+        "livemalins.net": 43.561986446380615,
+        "malioter.pro": 5.71381950378418
     },
     "Mintemail_com": {
-        "cj.MintEmail.com": 57.2106753513217
+        "cj.MintEmail.com": 54.82976026041433
     },
     "Eyepaste_com": {
-        "eyepaste.com": 34.53132311999798
+        "eyepaste.com": 3.223165358416736
     },
     "Getnada_cc": {
         "techz24h.com": 70.0,
@@ -653,19 +741,19 @@
         "phdaily.com": 4.8732733726501465
     },
     "Harakirimail_com": {
-        "harakirimail.com": 20.55738854408264
+        "harakirimail.com": 4.185831919312477
     },
     "Fumail_co": {
         "chugllc.com": 70,
         "miytc.com": 26.414207637310028,
-        "btsu.edu.pl": 7.376677513122559
+        "btsu.edu.pl": 7.277643322944641
     },
     "Mailnesia_com": {
-        "mailnesia.com": 67.94534641504288
+        "mailnesia.com": 69.87158415094018
     },
     "Tempemail_co": {
-        "fmail10.de": 70.0,
-        "tempemail.co": 5.550193190574646
+        "fmail10.de": 36.145849108695984,
+        "tempemail.co": 5.085150256752968
     },
     "Tempmailers_com": {
         "backlav.com": 70.0
@@ -679,13 +767,48 @@
         "theglobi.link": 70,
         "oneurdu.click": 70.0,
         "fakel.xyz": 5.182384490966797,
-        "trashmail.ws": 6.887598037719727
+        "trashmail.ws": 3.968024507164955
     },
     "Mail_td": {
-        "uuf.me": 2.8159987926483154,
-        "nqmo.com": 3.0175012350082397
+        "uuf.me": 2.73740291595459,
+        "nqmo.com": 2.8552340865135193,
+        "end.tw": 2.6747782230377197,
+        "qabq.com": 2.6757805347442627
     },
     "Temppmails_com": {
         "pekflow.com": 9.49165964126587
+    },
+    "Mohmal_com": {
+        "mailna.me": 2.8055551052093506,
+        "mohmal.in": 2.670832633972168,
+        "mailna.co": 2.7325057983398438,
+        "mozej.com": 2.7161123752593994
+    },
+    "Temporarymail_com": {
+        "SolarNyx.com": 3.037639856338501,
+        "OpenMail.pro": 2.933677911758423,
+        "MailMagnet.co": 2.900946855545044,
+        "HorizonsPost.com": 2.92221736907959
+    },
+    "Tempmail_cc": {
+        "tempmail.cc": 3.056771397590637
+    },
+    "Noopmail_org": {
+        "noopmail.org": 53.53097039461136
+    },
+    "Tempdashmailbox_net": {
+        "temp-mailbox.net": 70.0
+    },
+    "Tempmailer_net": {
+        "juicy-mails.com": 70.0,
+        "free-webmail.com": 70,
+        "mailserverhosting.org": 70
+    },
+    "Emaildashfree_online": {
+        "email-free.online": 29.313952207565308,
+        "getnada.cc": 25.407320737838745
+    },
+    "Nicemail_cc": {
+        "tinytimer.org": 3.210171699523926
     }
 }

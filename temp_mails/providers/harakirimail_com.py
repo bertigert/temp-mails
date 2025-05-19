@@ -1,9 +1,11 @@
 import requests
 
-from .._constructors import _WaitForMail, _generate_user_data
+from .._constructors import _WaitForMail, _generate_user_data, GLOBAL_UA
 
 class Harakirimail_com(_WaitForMail):
     """An API Wrapper around the https://harakirimail.com/ website"""
+
+    _BASE_URL = "https://harakirimail.com"
 
     def __init__(self, name: str=None, domain:str=None, exclude: list[str]=None):
         """
@@ -17,7 +19,7 @@ class Harakirimail_com(_WaitForMail):
 
         self._session = requests.Session()
         self._session.headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+            "User-Agent": GLOBAL_UA
         }
 
         self.name, self.domain, self.email, self.valid_domains = _generate_user_data(name, domain, exclude, self.get_valid_domains())
@@ -37,7 +39,7 @@ class Harakirimail_com(_WaitForMail):
         mail_id - the id of the mail you want the content of
         """
 
-        r = self._session.get("https://harakirimail.com/api/v1/email/"+mail_id)
+        r = self._session.get(f"{self._BASE_URL}/api/v1/email/{mail_id}")
         if r.ok:
             return r.json()["bodyhtml"]
 
@@ -47,7 +49,7 @@ class Harakirimail_com(_WaitForMail):
         Returns the inbox of the email as a list with mails as dicts list[dict, dict, ...]
         """
 
-        r = self._session.get("https://harakirimail.com/api/v1/inbox/"+self.name)
+        r = self._session.get(f"{self._BASE_URL}/api/v1/inbox/{self.name}")
         if r.ok:
             return [{
                 "id": email["_id"],

@@ -7,6 +7,8 @@ from .._constructors import _WaitForMail, _generate_user_data
 class Eyepaste_com(_WaitForMail):
     """An API Wrapper around the https://www.eyepaste.com/ website."""
     
+    _BASE_URL = "https://www.eyepaste.com"
+
     def __init__(self, name: str=None, domain:str=None, exclude: list[str]=None):
         """
         Generate an inbox\n
@@ -35,7 +37,7 @@ class Eyepaste_com(_WaitForMail):
         Returns the inbox of the email as a list with mails as dicts list[dict, dict, ...]
         """
 
-        r = self._session.get(f"https://www.eyepaste.com/inbox/{self.email}.rss")
+        r = self._session.get(f"{self._BASE_URL}/inbox/{self.email}.rss")
         
         if r.ok:
             return [

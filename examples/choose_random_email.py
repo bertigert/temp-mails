@@ -14,7 +14,7 @@ This script is for choosing a random email and implementing a universal wait_for
 def choose_email():
     """Chooses a random email from all possible websites"""
     
-    mail_class_str = random.choice(temp_mails.__all_providers__)
+    mail_class_str = random.choice(temp_mails._all_providers)
     
     print(f"Creating email on website {mail_class_str}")
 
@@ -89,6 +89,19 @@ def wait_for_new_email(mail, send_email_func, return_content: bool=True, delay: 
         return data
 
 
+for mail in temp_mails._all_providers:
+    mail_class = temp_mails.__getattribute__(mail)
+    if "get_valid_domains" in dir(mail_class):
+        try:
+            valid = mail_class.get_valid_domains()
+            if len(valid) < 2:
+                print("mail:", mail, valid)
+        except:
+            print(mail, "ERROR")
+        
+    else:
+        print(mail, "has no get_valid_domains")
+quit()
 
 mail = choose_email()
 print(mail.email)

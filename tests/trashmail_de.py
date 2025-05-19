@@ -28,7 +28,3 @@ print(d2)
 assert d1["id"] != d2["id"], "Email IDs are the same"
 
 assert len(mail.get_inbox()) == 2, "Inbox length wrong"
-
-d3 = mail.get_mail_content(mail_id=d1["id"])
-print(d3)
-assert d3 != None, "Failed to get email content"

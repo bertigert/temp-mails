@@ -27,9 +27,8 @@ class Byom_de():
 
     @staticmethod
     def get_valid_domains() -> list[str]:
-        """
-        Returns a list of valid domains of the service (only byom.de)
-        """
+        """Returns a list of valid domains of the service. This website only has 1 domain"""
+        
         return ["byom.de"]
 
     def get_inbox(self) -> list[dict]:
@@ -43,7 +42,7 @@ class Byom_de():
                 "from": email["from"],
                 "time": email["created_at"],
                 "subject": email["subject"],
-                "content": email["html"],
+                "content": email.get("content", email.get("text")),
             } for email in r.json()]
 
 
@@ -57,7 +56,7 @@ class Byom_de():
         """
         if timeout > 0: start = time()        
 
-        r = self._session.get("https://byom-notifier.herokuapp.com/faye?message=%5B%7B%22channel%22%3A%22%2Fmeta%2Fhandshake%22%2C%22version%22%3A%221.0%22%2C%22supportedConnectionTypes%22%3A%5B%22websocket%22%2C%22eventsource%22%2C%22long-polling%22%2C%22cross-origin-long-polling%22%2C%22callback-polling%22%5D%2C%22id%22%3A%221%22%7D%5D")
+        r = self._session.get("https://notifier.byom.de/faye?message=%5B%7B%22channel%22%3A%22%2Fmeta%2Fhandshake%22%2C%22version%22%3A%221.0%22%2C%22supportedConnectionTypes%22%3A%5B%22websocket%22%2C%22eventsource%22%2C%22long-polling%22%2C%22cross-origin-long-polling%22%2C%22callback-polling%22%5D%2C%22id%22%3A%221%22%7D%5D")
         if not r.ok:
             return None
         
@@ -86,7 +85,7 @@ class Byom_de():
                 
 
         email_data = None
-        ws = websocket.WebSocketApp(f"wss://byom-notifier.herokuapp.com/faye", 
+        ws = websocket.WebSocketApp(f"wss://notifier.byom.de/faye", 
                                         on_message=on_message, on_open=on_open
                                     )
         ws.run_forever()

@@ -7,6 +7,8 @@ from .._constructors import _WaitForMail, _generate_user_data
 class Mailcatch_com(_WaitForMail):
     """An API Wrapper around the http://mailcatch.com/ website."""
     
+    _BASE_URL = "http://mailcatch.com"
+
     def __init__(self, name: str=None, domain:str=None, exclude: list[str]=None):
         """
         Generate an inbox\n
@@ -38,7 +40,7 @@ class Mailcatch_com(_WaitForMail):
         mail_id - the id of the mail you want the content of
         """                     
         
-        r = self._session.get(f"http://mailcatch.com/en/temporary-mail-content?box={self.name}&show={mail_id}")
+        r = self._session.get(f"{self._BASE_URL}/en/temporary-mail-content?box={self.name}&show={mail_id}")
         if r.ok:
             soup = BeautifulSoup(r.text, "lxml")
             end = soup.find("script", {"src": "/js/jquery-1.3.1.min.js"})
@@ -50,7 +52,7 @@ class Mailcatch_com(_WaitForMail):
         Returns the inbox of the email as a list with mails as dicts list[dict, dict, ...]
         """
 
-        r = self._session.get("http://mailcatch.com/en/temporary-inbox-rss?box="+self.name)
+        r = self._session.get(f"{self._BASE_URL}/en/temporary-inbox-rss?box={self.name}")
         if r.ok:
             return [
                 {

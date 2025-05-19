@@ -3,7 +3,7 @@ import json
 from bs4 import BeautifulSoup
 import requests
 
-from .._constructors import _Livewire2
+from .._constructors import _Livewire2, GLOBAL_UA
 
 class Trashmail_ws(_Livewire2):
     """An API Wrapper around the https://trashmail.ws/ website."""
@@ -33,7 +33,7 @@ class Trashmail_ws(_Livewire2):
         """
             Returns a list of a valid domains, None if failure
         """
-        r = requests.get("https://trashmail.ws/", headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"})
+        r = requests.get("https://trashmail.ws/", headers={"User-Agent": GLOBAL_UA})
 
         if r.ok:
             soup = BeautifulSoup(r.text, "lxml")

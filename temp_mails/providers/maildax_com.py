@@ -5,6 +5,8 @@ from .._constructors import _WaitForMail
 class Maildax_com(_WaitForMail):
     """An API Wrapper around the https://maildax.com/ website"""
 
+    _BASE_URL = "https://api2.maildax.com"
+
     def __init__(self):
         """
         Generate an random inbox
@@ -13,7 +15,7 @@ class Maildax_com(_WaitForMail):
 
         self._session = requests.Session()
         
-        r = self._session.post("https://api2.maildax.com/email")
+        r = self._session.post(self._BASE_URL+"/api/email")
         if not r.ok:
             raise Exception("Failed to create email, status", r.status_code)
         
@@ -30,7 +32,7 @@ class Maildax_com(_WaitForMail):
         mail_id - the id of the mail you want the content of
         """
 
-        r = self._session.get(f"https://api2.maildax.com/email/mail/{mail_id}?secret={self._secret}")
+        r = self._session.get(f"{self._BASE_URL}/api/email/mail/{mail_id}?secret={self._secret}")
         if r.ok:
             return r.json()["data"]["html"]
 
@@ -40,7 +42,7 @@ class Maildax_com(_WaitForMail):
         Returns the inbox of the email as a list with mails as dicts list[dict, dict, ...]
         """
 
-        r = self._session.get(f"https://api2.maildax.com/email/mails?email={self.email}&secret={self._secret}")
+        r = self._session.get(f"{self._BASE_URL}/api/email/mails?email={self.email}&secret={self._secret}")
         if r.ok:
             return [{
                 "id": email["_id"],

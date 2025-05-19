@@ -1,11 +1,14 @@
+import time
 from bs4 import BeautifulSoup
 import requests
 
-from .._constructors import _WaitForMail, _generate_user_data
+from .._constructors import _WaitForMail, _generate_user_data, GLOBAL_UA
 
 class Tempmails_net(_WaitForMail):
     """An API Wrapper around the https://tempmails.net/ website"""
-    
+
+    _BASE_URL = "https://tempmails.net"
+
     def __init__(self, name: str=None, domain: str=None, exclude: list[str]=None):
         """
         Generate an inbox\n
@@ -20,20 +23,21 @@ class Tempmails_net(_WaitForMail):
         self._session = requests.Session()
         
         self._session.headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+            "user-agent": GLOBAL_UA,
         }
     
-        r = self._session.get("https://tempmails.net/")
+        r = self._session.get(self._BASE_URL)
         
         if not r.ok:
-            raise Exception("Failed to create email, status", r.status_code)
+            raise Exception("Failed to create email, status", r.status_code, r.text)
 
         self._token = BeautifulSoup(r.text, "lxml").find("meta", {"name": "csrf-token"})["content"]
-        
-        r = self._session.get("https://tempmails.net/messages")
-        
+        self._session.headers["x-csrf-token"] = self._token
+        self._session.headers["x-requested-with"] = "XMLHttpRequest"
+
+        r = self._session.get(f"{self._BASE_URL}/messages?_={int(time.time()*1000)}")
         if not r.ok:
-            raise Exception("Failed to create email, status", r.status_code)
+            raise Exception("Failed to create email, status", r.status_code, r.text)
         
         if not domain and not name and not exclude:    
             data = r.json()
@@ -43,7 +47,7 @@ class Tempmails_net(_WaitForMail):
         else:
             self.name, self.domain, self.email, self.valid_domains = _generate_user_data(name, domain, exclude, self.get_valid_domains())
             
-            r = self._session.post("https://tempmails.net/create", data={
+            r = self._session.post(self._BASE_URL+"/create", data={
                 "_token": self._token,
                 "name": self.name,
                 "domain": self.domain
@@ -51,7 +55,7 @@ class Tempmails_net(_WaitForMail):
             if not r.ok:
                 raise Exception(f"Something went wrong on Email Creation, status: {r.status_code}, response content:\n{r.text}")
             
-            r = self._session.get("https://tempmails.net/messages")    
+            r = self._session.get(f"{self._BASE_URL}/messages?_={int(time.time()*1000)}")    
             if not r.ok:
                 raise Exception("Failed to create email, status", r.status_code)
             
@@ -60,13 +64,13 @@ class Tempmails_net(_WaitForMail):
             self.name, self.domain = self.email.split("@", 1)
 
 
-    @staticmethod
-    def get_valid_domains() -> list[str]:
+    @classmethod
+    def get_valid_domains(cls) -> list[str]:
         """
         Returns a list of valid domains of the service (format: abc.xyz) as a list
         """
-
-        r = requests.get("https://tempmails.net/change")
+        s = requests.Session()
+        r = s.get(cls._BASE_URL+"/change")
         if r.ok:
             soup = BeautifulSoup(r.text, "lxml")
             return [domain["value"] for domain in soup.find("select", {"name": "domain"}).findChildren("option")]
@@ -78,7 +82,7 @@ class Tempmails_net(_WaitForMail):
         Args:\n
         mail_id - the id of the mail you want the content of
         """                     
-        r = self._session.get("https://tempmails.net/view/"+mail_id)
+        r = self._session.get(self._BASE_URL+"/view/"+mail_id)
         if r.ok:
             soup = BeautifulSoup(r.text, "lxml")
             main = soup.find("div", {"class": "textHolder text-center"})
@@ -93,7 +97,7 @@ class Tempmails_net(_WaitForMail):
         Returns the inbox of the email as a list with mails as dicts list[dict, dict, ...]
         """
 
-        r = self._session.get("https://tempmails.net/messages")
+        r = self._session.get(f"{self._BASE_URL}/messages?_={int(time.time()*1000)}")
         if r.ok:
             messages = r.json()["messages"]
             if messages == "":

@@ -1,5 +1,5 @@
 import requests
-from .._constructors import _WaitForMail, SSLAdapterCF
+from .._constructors import _WaitForMail, SSLAdapterCF, GLOBAL_UA
 
 
 class Tenminuteemail_com(_WaitForMail):
@@ -14,7 +14,7 @@ class Tenminuteemail_com(_WaitForMail):
         self._session = requests.Session()
         
         self._session.headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+            "User-Agent": GLOBAL_UA
         }
         self._session.mount("https://", SSLAdapterCF)
 
