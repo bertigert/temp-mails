@@ -86,7 +86,7 @@ class Mailinator_com():
                 return {
                     "id": data["id"],
                     "from": data["fromfull"],
-                    "time": f"{time()*1000-data["seconds_ago"]:.0f}",
+                    "time": f"{time()*1000-data['seconds_ago']:.0f}",
                     "subject": data["subject"]
                 }
             
